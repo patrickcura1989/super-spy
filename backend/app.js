@@ -6,7 +6,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 var forecastIOKey = "XXX"; // FIXME : replace with your API key gained from forecast.io
-var inventory = "countdown": {"eggs" : 725,
+var inventory = {"countdown": {"eggs" : 725,
                                "milk" : 643,
                                "ham" :  300,
                                "bread": 100,
