@@ -67,12 +67,8 @@ function searchInvetory(item) {
 //  }
 //}
 
-//app.get("/", (req, res) => {
-//  requestTemperature().then(temperature => {
-//    var food = determineFood(temperature);
-//    var variables = {temperature, food};
-//    res.render("index.html.ejs", variables);
-//  });
-//});
+app.get("/", (req, res) => {
+ res.send("hello");
+});
 
-//app.listen(3000);
+app.listen(3000);
