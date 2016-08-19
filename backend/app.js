@@ -47,7 +47,7 @@ function searchInventory(item) {
   var pak_n_save = inventory["pak_n_save"][item];
 
   // return map of results
-  return {"countdown": countdown, "new_world": new_world, "pak_n_save": pak_n_save};
+  return {"countdown": {item: countdown}, "new_world": {item: new_world}, "pak_n_save": {item: pak_n_save}};
 }
 
 
