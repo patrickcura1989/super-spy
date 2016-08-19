@@ -6,7 +6,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 var forecastIOKey = "XXX"; // FIXME : replace with your API key gained from forecast.io
-var inventory = {"countdown": {"eggs" : 725,
+var inventory = "countdown": {"eggs" : 725,
                                "milk" : 643,
                                "ham" :  300,
                                "bread": 100,
@@ -40,10 +40,14 @@ var inventory = {"countdown": {"eggs" : 725,
                 };
 
 
-function searchInvetory(item) {
+function searchInventory(item) {
   //search inventory
+  var countdown = inventory["countdown"][item];
+  var new_world = inventory["new_world"][item];
+  var pak_n_save = inventory["pak_n_save"][item];
 
   // return map of results
+  return {"countdown": countdown, "new_world": new_world, "pak_n_save": pak_n_save};
 }
 
 
