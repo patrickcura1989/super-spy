@@ -5,8 +5,7 @@ var request = require('request-promise-native');
 var cheerio = require('cheerio');
 var app = express();
 
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+app.use(express.static("static"));
 
 var inventory = {"countdown": {"eggs" : 725,
                                "milk" : 643,
@@ -126,7 +125,7 @@ app.get('/search', function(req, res){
        var shop_to_price = {"countdown":prices[0], "new_world":prices[1], "pak_n_save": prices[2]};
        res.json(shop_to_price);
      });
-})
+});
 
 app.listen(3000);
 
