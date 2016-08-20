@@ -11,6 +11,10 @@ section.section1{
 	padding-top:50px;
 }
 
+#resultscontainer{
+	padding: 50px;
+}
+
 #section2{
 	display: none;
 }
@@ -50,10 +54,21 @@ h1.titleSecondPage{
 	color: white;
 }
 
+h3{
+	text-align: center;
+	font-family: "Helveica", Arial, sans-serif;
+	color: white;
+}
+
+p{
+	text-align: center;
+	font-family: "Helveica", Arial, sans-serif;
+	color: white;
+}
+
 .col-centered{
     float: none;
     margin: 0 auto;
-
 }
 
 #searchButton{

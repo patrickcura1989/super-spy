@@ -46,9 +46,17 @@ $(function(){
 				third = temp;				
 			}
 
+			$("#colLeftHeader").text("$" + second[1]);
+			$("#colLeftP").text(second[0]);
+
+			$("#colMiddleHeader").text("$" + best[1]);
+			$("#colMiddleP").text(best[0]);
+
+			$("#colRightHeader").text("$" + third[1]);
+			$("#colRightP").text(third[0]);
 
 			
-			alert(best[0] + "!: " + best[1] + "\n" + second[0] + "!: " + second[1] + "\n" + third[0] + "!: " + third[1]);
+			//alert(best[0] + "!: " + best[1] + "\n" + second[0] + "!: " + second[1] + "\n" + third[0] + "!: " + third[1]);
 
 		});
 	});
