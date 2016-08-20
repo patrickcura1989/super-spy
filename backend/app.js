@@ -82,7 +82,33 @@ function getPakNSavePrice(item){
 
 // Function scrapes off the new world website for information
 function getNewWorldPrice(item){
-  return Promise.resolve(inventory["new_world"][item]);
+  return new Promise(function(resolve, reject){
+      var headers = {
+           'Authorization': 'd84cd964-2167-e611-8664-e4115be92184',
+           'Accept-Language': 'en-US,en;q=0.8',
+           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+           'Accept': 'application/vnd.mywebgrocer.grocery-list-v2+json',
+           'Referer': 'https://shop.newworld.co.nz/store/6EE070045',
+           'X-Requested-With': 'XMLHttpRequest',
+           'Connection': 'keep-alive',
+           'Cookie': 'MWG_GSA_S={"AuthToken":"d84cd964-2167-e611-8664-e4115be92184","PseudoStoreId":"6EE070045","Version":"1.11"}'
+       };
+       var options = {
+           url: 'https://shop.newworld.co.nz/api/v1/products/store/6EE070045/search?skip=0&take=15&q='+item,
+           headers: headers
+       };
+
+       function callback(error, response, body) {
+           if (!error && response.statusCode == 200) {
+             var obj = JSON.parse(body);
+             var price = obj["Items"][0]["CurrentPrice"].trim().replace("$","").replace(".","");
+             var integerPrice = parseInt(price);
+             resolve(integerPrice);
+           }
+       }
+       request(options, callback);
+  });
+  //return Promise.resolve(inventory["new_world"][item]);
 }
 
 // This function handles HTML GET requests
