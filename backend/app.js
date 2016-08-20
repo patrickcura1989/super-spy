@@ -59,30 +59,31 @@ var item = req.param('item');
 console.log(item);
 res.json(searchInventory(item));
 
-url = 'http://www.imdb.com/title/tt1229340/';
+url = 'https://shop.newworld.co.nz/store/6EE070045#/search/egg/1';
 
 request(url, function(error, response, html){
     if(!error){
         var $ = cheerio.load(html);
 
     var title, release, rating;
-    var json = { title : "", release : "", rating : ""};
+    var json = { price1 : "", price2 : ""};
 
-    $('.header').filter(function(){
+    console.log($('html').html());
+
+    var stream = fs.createWriteStream("my_file.txt");
+stream.once('open', function(fd) {
+  stream.write($('html').html()+"");
+  stream.end();
+});
+
+    $('.price.din-medium').filter(function(){
         var data = $(this);
-        title = data.children().first().text();
-        release = data.children().last().children().text();
+        console.log(data.text());
 
-        json.title = title;
-        json.release = release;
+        json.price1 = data.text();
     })
 
-    $('.star-box-giga-star').filter(function(){
-        var data = $(this);
-        rating = data.text();
 
-        json.rating = rating;
-    })
 }
 
 // To write to the system we will use the built in 'fs' library.

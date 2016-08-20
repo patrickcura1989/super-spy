@@ -1,0 +1,2533 @@
+
+<script>  if (/*@cc_on!@*/false) { document.documentElement.className += ' gt-ie9'; }</script>
+<!--<![endif]-->
+<!-- HACK 
+This is because the URL fragment is not retained by all browsers (IE8 and below) after redirection.
+So, the requests come in with the fragment in the query string from a chain URL, then redirected to a 
+store URL with the query string retained, and then we reconstruct the URL here by replacing the query 
+string with the actual fragment.
+-->
+<script type="text/javascript">
+  var queryString = window.location.search;
+  if (queryString.indexOf('?anchor=') >= 0) {
+    var url = window.location.toString();
+    window.location = url.replace(/\?anchor=.*/g, decodeURIComponent(queryString.replace('?anchor=', '')));
+  }
+</script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New World Thorndon</title>
+  <link rel="shortcut icon" type="image/x-icon" href="https://ctsecure.newworld.co.nz/storefront/Content/styles/css/themes/A063326/6EE070045/images/FavIcon.ico?mwg_v=5.13.3.23">
+  <link id="theme" href="https://ctsecure.newworld.co.nz/storefront/Content/styles/css/themes/A063326/6EE070045/base.min.css?mwg_v=5.13.3.23" rel="stylesheet" type="text/css">
+  
+<link type="text/css" rel="stylesheet" href="https://shop.newworld.co.nz/api/advertising/v5/Ad/Content/ads.min.css?mwg_v=5.13.3.23">
+
+<script src="https://ctsecure.newworld.co.nz/storefront/Content/scripts/lib/modernizr.js?mwg_v=5.13.3.23" type="text/javascript"></script>
+<!-- <respond-proxy> -->
+  <script src="/Content/scripts/lib/respond.js" type="text/javascript"></script>
+  <link href="https://ctsecure.newworld.co.nz/storefront/Content/styles/css/respond-proxy.html" id="respond-proxy" rel="respond-proxy">
+  <link href="/Content/styles/css/images/respond.proxy.gif" id="respond-redirect" rel="respond-redirect">
+  <script src="/Content/scripts/lib/respond.proxy.js"></script>
+<!-- </respond-proxy> -->
+
+  <script type="text/html" id="DialogViewModel.dialog">
+  <div data-bind="html: messageHtml">
+  </div>
+  <div class="actions" data-bind="
+    foreach: actions,
+    css: {multiple: actions().length > 1}">
+      <button data-bind="
+        text: name,
+        css: {secondary: $index() !== 0},
+        click: callback" >
+      </button>
+  </div>
+</script>
+
+<script type="text/html" id="Address">
+  <!-- ko if: $data -->
+    <address data-bind="attr: { 'class' : CountryCode }">
+      <label><span data-bind="fullNameText: $data"></span></label>
+      <label><span data-bind="text: Line1"></span></label>
+      <label><span data-bind=" text: Line2, visible: Line2"></span></label>
+      <label><span data-bind=" text: Line3, visible: Line3"></span></label>
+      <label>
+        <span class="addressCity" data-bind="text: City, visible: City"></span>
+        <span class="addressState" data-bind="text: State, visible: State"></span>
+        <span class="addressCountryCode" data-bind="text: CountryCode, visible: CountryCode"></span>
+        <span class="addressPostalCode" data-bind="text: Zip, visible: Zip"></span>
+      </label>
+      <label data-bind="if: Phone1 != null"><span data-bind="text: Phone1.Number"></span></label>
+      <label data-bind="if: Phone2 != null"><span data-bind="text: Phone2.Number"></span></label>
+    </address>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="CountdownTimerViewModel.view">
+  <!-- ko if: isActive --> 
+    <div class="timerWrapper">
+      <div>
+        <span data-bind="text: ogs.gsa.resources.ChangeOrderCounter_OrderLabel"></span> 
+        <span data-bind="text: orderId"></span>
+        <a class="timerInfo" data-bind="click: displayTimerInfo">?</a>
+      </div>
+      <span data-bind="text: ogs.gsa.resources.ChangeOrderCounter_TimeToChangeOrder"></span>
+      <div class="digitsWrapper" data-bind="countdownTimer: {
+                        initialTime: initialTime, 
+                        timeExpiredCallback: timeExpired,
+                        labels: labels
+                        }">
+        <div class="timerSlotContainer hours">
+          <span class="timerSlot"></span>
+          <label></label>
+        </div>
+        <div class="timerSlotContainer minutes">
+          <span class="timerSlot"></span>
+          <label></label>
+        </div>
+        <div class="timerSlotContainer seconds">
+          <span class="timerSlot"></span>
+          <label></label>
+        </div>
+      </div>
+      <button data-bind="click: confirmCancelChangeOrder, text: ogs.gsa.resources.ChangeOrderCounter_CancelChangeOrderText"></button>
+    </div>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="iFrameDialog">
+  <iframe name="paymentFrame" data-bind="attr: { src: src }"></iframe>
+</script>
+<script type="text/html" id="Invoice.summary">
+    <h1 data-bind="text: title, visible: title"></h1>
+    <a href="#" class="summaryInfo" data-bind="
+      text: ogs.gsa.resources.Checkout_SummaryInfoText, 
+      visible:showOrderSummaryInfoIcon, 
+      click: $root.showSummaryInfoDialog,
+      attr: {'aria-label': ogs.gsa.resources.Checkout_OrderSummaryTitle}"></a>
+  <ul data-bind="foreach: items">
+    <!-- ko if : Items.length > 0 -->
+    <li>
+      <label data-bind="text: Name"></label><span></span>
+    </li>
+    <li>
+      <ul data-bind="foreach: Items">
+        <li>
+          <label data-bind="text: Name, title: Name"></label>
+          <a class="invoiceSummaryInfo" data-bind="visible: DescriptionHtml, click: $root.showInvoiceSummaryDetails ">i</a>
+          <span data-bind="text: Value"></span>
+        </li>
+      </ul>
+    </li>
+    <!-- /ko -->
+    <!-- ko if : Items.length == 0 -->
+    <li>
+      <label data-bind="html: Name, title: Name"></label>
+      <a class="invoiceSummaryInfo" data-bind="visible: DescriptionHtml, click: $root.showInvoiceSummaryDetails ">i</a>
+      <span data-bind="text: Value"></span>
+    </li>
+    <!-- /ko -->
+  </ul>
+  <h2>
+    <span data-bind="text: total.label"></span>
+    <span data-bind="text: total.value"></span>
+    <!-- ko if: ko.isObservable(total.value) -->
+      <div class="accessibilityAlert" aria-live="polite" data-bind="html: ogs.gsa.resources.Accessibility_CheckoutTotalUpdatedAlert.formatWith({total: total.value()})"></div>
+    <!-- /ko -->
+  </h2>
+</script>
+
+<script type="text/html" id="Checkout.navigation">
+  <ul data-bind="foreach: workflowSteps, attr: {'aria-hidden': 'true'}">
+    <li data-bind="css : { active : viewModel.active() }">
+      <button data-bind="
+        text: name, 
+        click: $root.activateStep, 
+        disable : viewModel.disabled()">
+      </button>
+    </li>
+  </ul>
+  <a href="#" data-bind="click: backToShopping, text: backToShoppingText, visible: backToShoppingVisible"></a>
+</script>
+
+<script type="text/html" id="Checkout.messages">
+  <section class="messageList" data-bind="visible: any">
+    <div class="errors" data-bind="visible: errors().length > 0, template: { name: 'Checkout.messages.list', data: errors }">
+    </div>
+
+    <div class="warnings" data-bind="visible: warnings().length > 0, template: { name: 'Checkout.messages.list', data: warnings }">
+    </div>
+
+    <div class="info" data-bind="visible: info().length > 0, template: { name: 'Checkout.messages.list', data: info }">
+    </div>
+  </section>
+</script>
+
+<script type="text/html" id="Checkout.messages.list">
+  <ul data-bind="foreach: $data">
+    <li data-bind="html: $data"></li>
+  </ul>
+</script>
+
+<script type="text/html" id="Checkout.aside">
+  <h3 data-bind="text: title"></h3>
+  <div data-bind="html: htmlBody"></div>
+</script>
+
+<script type="text/html" id="Checkout.promoCodeInfo">
+  <!-- ko if: promoCodeApplied -->
+    <section>
+      <h2 data-bind="text: ogs.gsa.resources.Payment_PromoLabelText"></h2>
+      <span data-bind="text: ogs.gsa.resources.Payment_PromoCodeAppliedLabelText"></span>
+      <span data-bind="text: promoCode"></span>
+    </section>
+  <!-- /ko -->
+</script>
+<!-- Shared Templates for the Product Browsing area of the application -->
+<script type="text/html" id="ProductBrowsing.facets">
+  <!-- ko if: facets().length > 0 -->
+    <nav id="facets" data-bind= "with: facets()">
+      <h3 data-bind="text: ogs.gsa.resources.Product_FilterHeader"></h3>
+      <section data-bind="foreach: $data">
+        <h4 data-bind="text:Name"></h4>
+        <ul data-bind="facetList: {options: Options, name: Name, accessibilityFilterLabel: ogs.gsa.resources.Accessibility_FilterCategory}">
+        </ul>
+      </section>
+    </nav>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="Lists.editListDialog">
+  <!-- ko if: errors().length > 0 -->
+    <ul class="errors" data-bind="foreach: errors">
+      <li data-bind="text: Text"></li>
+    </ul>
+  <!-- /ko -->
+
+  <!-- ko if: dialogMode() === dialogModes.editList -->
+    <!-- ko template: { name: 'Lists.listNameInputs' } -->
+    <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- ko if: dialogMode() === dialogModes.editListFromCart -->
+    <!-- ko template: { name: 'Lists.editListFromCart' } -->
+    <!-- /ko -->
+  <!-- /ko -->
+
+  <div class="actions multiple">
+    <button data-bind="text: confirmButtonText, click: save"></button>
+    <button class="secondary" data-bind="text: ogs.gsa.resources.Lists_EditListDialogCancel, click: close"></button>
+  </div>
+</script>
+
+<script type="text/html" id="GuestCheckoutViewModel.proceedToCheckoutDialog">
+  <!-- ko if: activePage() === pages.checkoutOptions -->
+    <!-- ko template: { name: 'GuestCheckoutViewModel.proceedToCheckoutOptions' } -->
+    <!-- /ko -->
+  <!-- /ko -->
+
+  <!-- ko if: activePage() === pages.guestCheckoutForm -->
+    <!-- ko template: { name: 'GuestCheckoutFormViewModel.guestCheckoutForm', data: guestCheckoutFormViewModel } -->
+    <!-- /ko -->
+  <!-- /ko -->
+</script>
+
+<!-- Proceed to Checkout Decision Point template -->
+<script type="text/html" id="GuestCheckoutViewModel.proceedToCheckoutOptions">
+  <div id="proceedToCheckoutOptions">
+    <section>
+      <div>
+        <h3 data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutSignInTitle"></h3>
+        <span class="noteInfo">!</span>
+        <small data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutDialogMergeCartWarning"></small>
+        <p data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutSignInText"></p>
+        <div class="actions">
+          <button data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutSignInButton, click: promptSignIn"></button>
+        </div>
+        <!-- ko if: displayMergeCartWarning -->
+        <!-- /ko -->
+      </div>
+    </section>
+    <section class="last">
+      <div>
+        <h3 data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutCreateAnAccountTitle"></h3>
+        <p data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutCreateAccountText"></p>
+        <div class="actions">
+          <button data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutCreateAccountButton, click: promptRegistration"></button>
+        </div>
+      </div>
+      <div>
+        <h3 data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutContinueWithoutSignInTitle"></h3>
+        <div class="actions">
+          <button data-bind="text: window.ogs.gsa.resources.Cart_ProceedToCheckoutContinueWithoutSignInButton, click: checkoutAsGuest"></button>
+        </div>
+      </div>
+    </section>
+  </div>
+</script>
+
+<script type="text/html" id="GuestCheckoutFormViewModel.guestCheckoutForm">
+  <div id="guestCheckoutForm">
+    <p data-bind="text: ogs.gsa.resources.GuestCheckoutForm_Description"></p>
+    <!-- ko if: errors().length > 0 -->
+      <ul class="errors" data-bind="foreach: errors">
+        <li data-bind="text: Text" aria-live="assertive"></li>
+      </ul>
+    <!-- /ko -->
+    <ul class="inputs">
+      <li>
+        <label data-bind="text: ogs.gsa.resources.GuestCheckoutForm_FirstName"></label>
+        <label data-bind="validationNotification: firstName" ></label>
+        <input type="text" data-bind="value: firstName, attr: { 'aria-label': ogs.gsa.resources.GuestCheckoutForm_FirstName }"/>
+      </li>
+      <li>
+        <label data-bind="text: ogs.gsa.resources.GuestCheckoutForm_LastName"></label>
+        <label data-bind="validationNotification: lastName" ></label>
+        <input type="text" data-bind="value: lastName, attr: { 'aria-label': ogs.gsa.resources.GuestCheckoutForm_LastName }"/>
+      </li>
+      <li>
+        <label data-bind="text: ogs.gsa.resources.GuestCheckoutForm_Email"></label>
+        <label data-bind="validationNotification: email" ></label>
+        <input type="text" data-bind="value: email,  attr: { 'aria-label': ogs.gsa.resources.GuestCheckoutForm_Email }"/>
+      </li>
+      <li class="phone">
+        <label data-bind="text: ogs.gsa.resources.GuestCheckoutForm_Phone"></label>
+        <label data-bind="validationNotification: phone" ></label>
+        <input type="text" data-bind="value: phone, attr: { 'aria-label': ogs.gsa.resources.GuestCheckoutForm_Phone }"/>
+        <aside>
+          <input type="checkbox" data-bind="checked: isMobilePhone"/>
+          <label data-bind="text: ogs.gsa.resources.GuestCheckoutForm_Mobile"></label>
+        </aside>
+      </li>
+    </ul>
+  </div>
+  <div class="actions multiple">
+    <button data-bind="text: ogs.gsa.resources.GuestCheckoutForm_ConfirmButtonText, click: checkoutAsGuest"></button>
+    <button class="secondary" data-bind="text: ogs.gsa.resources.GuestCheckoutForm_CancelButtonText, click: cancel"></button>
+  </div>
+</script>
+
+<script type="text/html" id="UserDefinedItemManagerViewModel.addCustomItemDialog">
+  <p data-bind="html: ogs.gsa.resources.UserDefined_HeaderHelpText"></p>
+  <!-- ko if: errorMessage -->
+    <p class="errors" data-bind="text: errorMessage"></p>
+  <!-- /ko -->
+  <ul class="inputs">
+    <li>
+      <label data-bind="text: ogs.gsa.resources.UserDefined_DescriptionLabelText"></label>
+      <label data-bind="validationNotification: description" ></label>
+      <input type="text" data-bind="value: description, placeholder: ogs.gsa.resources.UserDefined_DescriptionUserHintText"/>
+    </li>
+    <li>
+      <label data-bind="text: ogs.gsa.resources.UserDefined_SizeLabelText"></label>
+      <label data-bind="validationNotification: size" ></label>
+      <input type="text" data-bind="value: size, placeholder: ogs.gsa.resources.UserDefined_SizeUserHintText"/>
+    </li>
+    <li>
+      <label data-bind="text: ogs.gsa.resources.UserDefined_QuantityLabelText"></label>
+      <label data-bind="validationNotification: quantity" ></label>
+      <input type="text" data-bind="value: quantity, placeholder: ogs.gsa.resources.UserDefined_QuantityUserHintText"/>
+    </li>
+  </ul>
+  <div class="actions multiple">
+    <button data-bind="text: ogs.gsa.resources.UserDefined_AddToCartButtonText, click: submit"></button>
+    <button class="secondary" data-bind="text: ogs.gsa.resources.UserDefined_CancelButtonText, click: cancel"></button>
+  </div>
+</script>
+
+<!--
+  Simple ad templates' data uses the ad bindingHandler's binding format
+-->
+<script type="text/html" id="Advertising.leaderboard">
+  <div class="ad-leaderboard" data-size="leaderboard" data-bind="ad: $data"></div>
+</script>
+
+<script type="text/html" id="Advertising.mediumRectangle">
+  <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="ad: $data"></div>
+</script>
+
+<script type="text/html" id="Advertising.skyscraper">
+  <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="ad: $data"></div>
+</script>
+<script type="text/html" id="ProductViewModel.product">
+    <li data-bind = "
+      smoothHoverBool: displaySale,
+      css:{ saleProduct: (model.Sale !== null || model.PointRedemptionInfo !== null) && (displaySale || $parent.listViewType() === 'list')  }">
+      <div class="image" data-bind="click: selectProduct, css: { clickable: selectable}">
+        <!-- ko template: 'ProductViewModel.flags' --><!-- /ko -->
+        <img data-bind="attr: { alt: model.Brand +' '+ model.Name },
+                        imgSrc: { image: imagePaths.large, fallback: ogs.config.ProductImageFallbackLarge }"/>
+      </div>
+      <div class="text">
+        <a href="#" data-bind="click: selectProduct, css: { clickable: selectable}, attr: {'aria-label': ogs.gsa.resources.Accessibility_AcessProductDetails}">
+          <span data-bind="text: model.Brand + ' ' + model.Name"></span>
+        </a>
+        <p data-bind="html: model.Description"></p>
+        <span data-bind="
+          text: size().Size,
+          visible: sizes.length === 1">
+        </span>
+      </div>
+      <label data-bind="text: model.CurrentPrice, css: {sale: model.Sale !== null}"></label>
+      <!-- ko if: model.Sale !== null || model.PointRedemptionInfo !== null -->
+        <div class="saleInformation" data-bind="click: select">
+          <!-- ko template: { name: 'ProductViewModel.sale' } -->
+          <!-- /ko -->
+        </div>
+      <!-- /ko -->
+      <div class="actions">
+        <!-- ko if: model.InStock && model.IsAvailable -->
+          <!-- ko template: { name: 'CartViewModel.weight' } -->
+          <!-- /ko -->
+          <button data-bind="
+            visible: size().quantity() === 0,
+            click: incrementQuantity,
+            text: ogs.gsa.resources.Product_AddToCartButtonText,
+            attr: { 'aria-label': ogs.gsa.resources.Accessibility_AddToCart.formatWith({brand: model.Brand, product: model.Name})}"></button>
+          <div class="quantitySpinner" data-bind="visible: size().quantity() > 0">
+            <button class="decrease" data-bind="click: decrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_DecreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">-</button>
+            <label data-bind="text: size().quantity"></label>
+            <button class="increase" data-bind="click: incrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_IncreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">+</button>
+          </div>
+          <!-- ko if: listPlugin -->
+            <!-- ko template: { name: 'ProductListPlugin.productControl', data: listPlugin } -->
+            <!-- /ko -->
+          <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: !model.InStock -->
+          <button class="disabled" data-bind="text: ogs.gsa.resources.Product_OutOfStockText, attr: {'aria-label': ogs.gsa.resources.Accessibility_OutOfStockProduct.formatWith({brand: model.Brand, product: model.Name})}"></button>
+        <!-- /ko -->
+        <!-- ko if: !model.IsAvailable && model.InStock -->
+          <button class="disabled" data-bind="text: ogs.gsa.resources.Product_NotAvailableText, attr: {'aria-label': ogs.gsa.resources.Accessibility_NotAvailableProduct.formatWith({brand: model.Brand, product: model.Name})}"></button>
+        <!-- /ko -->
+        <!-- ko if: $data.remove -->
+          <a data-bind="
+            click: remove,
+            text: ogs.gsa.resources.List_RemoveFromList">
+          </a>
+        <!-- /ko -->
+      </div>
+    </li>
+</script>
+<script type="text/html" id="ProductViewModel.flags">
+  <ul class="flags" data-bind="saleFlagList: model.Decals">
+  </ul>
+</script>
+
+<script type="text/html" id="ProductViewModel.detail">
+  <div class="image">
+    <!-- ko template: 'ProductViewModel.flags' --><!-- /ko -->
+    <img data-bind="attr: { alt: model.Brand +' '+ model.Name }, imgSrc: { image: imagePaths.large, fallback: ogs.config.ProductImageFallbackLarge }"/>
+  </div>
+  <div class="primaryInformation">
+  <div class="text">
+    <div>
+      <h3 data-bind="text: model.Brand"></h3>
+      <h4 data-bind="text: model.Name"></h4>
+    </div>
+    <span data-bind="text: size().Size, visible: sizes.length <= 1"></span>
+  </div>
+
+    <p data-bind="visible: hasRegularPrice()">
+      <label data-bind="text: ogs.gsa.resources.Products_RegularPriceLabel"></label>
+      <del data-bind="text: model.RegularPrice"></del>
+    </p>
+    <p data-bind="css: { saleInfo: model.Sale !== null }">
+      <label data-bind="text: currentPriceLabel"></label>
+      <span data-bind="text: model.CurrentPrice"></span></p>
+    <p class="unitPrice" data-bind="visible: !ogs.gsa.storeSettings.SuppressUnitPrice"> <!-- && model.DisplayCurrentUnitPrice -->
+      <label data-bind="text: ogs.gsa.resources.Products_UnitPriceLabel"></label>
+      <span data-bind="text: model.CurrentUnitPrice"></span>
+    </p>
+
+    <div class="actions">
+      <!-- ko if: model.InStock -->
+        <!-- ko template: { name: 'CartViewModel.weight' } -->
+        <!-- /ko -->
+        <button data-bind="
+          visible: size().quantity() === 0,
+          click: incrementQuantity,
+          attr: { title : ogs.gsa.resources.Product_AddToCartButtonTooltip},
+          text: ogs.gsa.resources.Product_AddToCartButtonText"></button>
+        <div class="quantitySpinner" data-bind="visible: size().quantity() > 0">
+          <button class="decrease" data-bind="click: decrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_DecreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">-</button>
+          <label data-bind="text: size().quantity"></label>
+          <button class="increase" data-bind="click: incrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_IncreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">+</button>
+        </div>
+        <!-- ko if: listPlugin -->
+          <!-- ko template: { name: 'ProductListPlugin.productControl', data: listPlugin } -->
+          <!-- /ko -->
+        <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko ifnot: model.InStock -->
+        <button class="disabled" data-bind="text: ogs.gsa.resources.Product_OutOfStockText, attr: {'aria-label': ogs.gsa.resources.Accessibility_OutOfStockProduct.formatWith({brand: model.Brand, product: model.Name})}"></button>
+      <!-- /ko -->
+    </div>
+  </div>
+  <ul>
+    <li data-bind="if: model.Sale || model.PointRedemptionInfo">
+      <!-- ko template: { name: 'ProductViewModel.sale' } --><!-- /ko -->
+    </li>
+    <li data-bind="if: model.Description">
+      <h4 data-bind="
+        text: ogs.gsa.resources.Product_DescriptionTitle"></h4>
+      <div data-bind="
+        html: model.Description"></div>
+    </li>
+    <li data-bind="if: model.Sku">
+      <h4 data-bind="
+        text: ogs.gsa.resources.Product_SkuLabelText"></h4>
+      <div data-bind="
+        text: model.Sku"></div>
+    </li>
+    <!-- ko if: showLabels -->
+      <!-- ko with: details() -->
+        <!-- ko foreach: Labels -->
+          <li>
+            <h4 data-bind="text: Title"></h4>
+            <div data-bind="html: Description"></div>
+          </li>
+        <!-- /ko -->
+      <!-- /ko -->
+    <!-- /ko -->
+    <li data-bind="if: nutritionalInformation()">
+      <div data-bind="html: nutritionalInformation()" class="nutrition-table"></div>
+    </li>
+  </ul>
+</script>
+
+<script type="text/html" id="ProductViewModel.sale">
+  <h4 class="saleInfo" data-bind="
+      text: ogs.gsa.resources.Product_SaleDetailsTitle,
+      visible: model.Sale"></h4>
+  <div class="saleInfo" data-bind="
+      visible: model.Sale,
+      with: model.Sale"
+    >
+    <p data-bind="text: Description1, visible: Description1"></p>
+    <p data-bind="text: Description2, visible: Description2"></p>
+    <p data-bind="text: LimitText, visible: LimitText"></p>
+    <p class="saleDate" data-bind="text: DateText, visible: DateText"></p>
+  </div>
+  <p class="regularPriceInfo" data-bind="visible: hasRegularPrice()">
+    <label data-bind="text: ogs.gsa.resources.Products_RegularPriceLabel"></label>
+    <del data-bind="text: model.RegularPrice"></del>
+  </p>
+
+  <div class="pointsInfo" data-bind="
+      visible: model.PointRedemptionInfo,
+      with: model.PointRedemptionInfo">
+    <p data-bind="text: FrequentShopperProgramLabel, visible: FrequentShopperProgramLabel"></p>
+    <p data-bind="text: PriceText, visible: PriceText"></p>
+    <p data-bind="text: MaxRedeemableQuantityText, visible: MaxRedeemableQuantityText"></p>
+    <p data-bind="text: DateText, visible: DateText"></p>
+  </div>
+</script>
+
+<script type="text/html" id="MiniCartViewModel.view">
+    <div id="minicart" class="menu"
+         data-bind="slideVisibleVertical: { isOpen: menuManager.isMenuOpen, isEnabled: menuManager.isEnabled },
+                  slidingSpeed: window.ogs.config.Settings.MenuAnimationSlidingSpeed">
+        <div id="minicartHeader">
+            <h2 data-bind="text: ogs.gsa.resources.MiniCart_CartSummaryText"></h2>
+            <h3>
+                <label data-bind="text: ogs.gsa.resources.MiniCart_ItemsText"></label>
+                <span data-bind="text: cartQuantity()"></span>
+            </h3>
+        </div>
+        <!-- ko if: availableCartItemsCount() == 0 -->
+        <ul>
+            <li>
+                <p data-bind="text: ogs.gsa.resources.MiniCart_NoItemsInCart"></p>
+            </li>
+        </ul>
+        <!-- /ko -->
+        <ul data-bind="lazyForeach: cartItems">
+        <!-- ko if: model.IsAvailable-->
+            <li>
+                <div class="image">
+                    <img data-bind="
+            click: select,
+            attr: { alt: model.Brand + ' ' + model.Name },
+            imgSrc: { image: imagePaths.small, fallback: ogs.config.ProductImageFallbackSmall },
+            css: { userDefinedItem: isUserDefinedItem }"/>
+                </div>
+                <h4 data-bind="text: model.Brand + ' ' + model.Name, attr: { title: 'Brand: ' + model.Brand + '\nName: ' + model.Name + '\nSize: ' + size().Size + '\nQuantity: ' + size().quantity() }"></h4>
+                <div class="itemActions">
+                    <!-- ko if: model.InStock -->
+                    <!-- ko template: { name: 'CartViewModel.weight' } -->
+                    <!-- /ko -->
+                    <div class="quantitySpinner" data-bind="visible: size().quantity() > 0">
+                        <button class="decrease" data-bind="click: decrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_DecreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">-</button>
+                        <label data-bind="text: size().quantity"></label>
+                        <button class="increase" data-bind="click: incrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_IncreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">+</button>
+                    </div>
+                    <span data-bind="
+                text: size().Size,
+                visible: sizes.length === 1">
+            </span>
+                    <!-- /ko -->
+                    <!-- ko ifnot: model.InStock -->
+                    <span class="outOfStockFlag" data-bind="text: ogs.gsa.resources.ViewCart_OutOfStockText"></span>
+                    <!-- /ko -->
+                    <label data-bind="text: lineTotal, css: {sale: model.Sale !== null}"></label>
+                    <div class="notes">
+                        <!-- ko template: { name: 'CartViewModel.notes' } -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </li>
+    <!-- /ko -->
+    </ul>
+    <div id="minicartFooter">
+      <h4>
+        <label>Total:</label>
+        <span data-bind="text: cartTotal"></span>
+      </h4>
+      <button data-bind="
+        click: viewCart,
+        text: ogs.gsa.resources.MiniCart_CheckoutButton">
+      </button>
+      <!-- ko template: { name: 'ReserveTimeSlotViewModel.view', data: timeslotReserve } -->
+      <!-- /ko -->
+    </div>
+  </div>
+</script>
+<script type="text/html" id="ProductBrowsingEngine.productListing">
+  <div data-bind="loadingScreen: loadingData, css: { activeSidebar: true }">
+    <div role="navigation">
+      <!-- ko template: { name: 'CategoryMenuItemViewModel.categorySisterAndChildrenNavigation', data: sisterCategories } -->
+      <!-- /ko -->
+
+      <!-- ko template: { name: 'ProductBrowsing.facets' } -->
+      <!-- /ko -->
+    </div>
+    <div role="main" class="productList">
+      <!-- ko template: { name: 'ProductBrowsingViewModel.listing' } -->
+      <!-- /ko -->
+    </div>
+    <div role="complementary">
+      <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+        ad: {
+          location: 284,
+          conditions: { isVisible: true },
+          triggers: {
+            localEvents: [
+              pageChanged,
+              productsFiltered,
+              productsSorted,
+              viewTypeChanged
+            ]
+          },
+          adTokens: adTokens
+        }">
+      </div>
+      <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+        ad: {
+          location: 285,
+          conditions: { isVisible: true },
+          triggers: {
+            localEvents: [
+              pageChanged,
+              productsFiltered,
+              productsSorted,
+              viewTypeChanged
+            ]
+          },
+          adTokens: adTokens
+        }">
+      </div>
+      <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+        ad: {
+          location: 286,
+          conditions: { isVisible: true },
+          triggers: {
+            localEvents: [
+              pageChanged,
+              productsFiltered,
+              productsSorted,
+              viewTypeChanged
+            ]
+          },
+          adTokens: adTokens
+        }">
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.productDetail">
+  <div role="main">
+    <!-- ko template: { name: 'ProductViewModel.detail' } -->
+    <!-- /ko -->
+  </div>
+  <div role="complementary">
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 288,
+        conditions: { isVisible: true }
+      }">
+    </div>
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 289,
+        conditions: { isVisible: true }
+      }">
+    </div>
+    <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+      ad: {
+        location: 290,
+        conditions: { isVisible: true }
+      }">
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.orderManagement">
+  <div role="main">
+    <!-- ko template: { name: 'OrderManagementViewModel.listing' } -->
+    <!-- /ko -->
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.orderDetail">
+  <div role="main">
+    <!-- ko template: { name: 'OrderManagementViewModel.detail' } -->
+    <!-- /ko -->
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.categoryEndcap">
+  <div data-bind="css: { activeSidebar: true }">
+    <div role="navigation">
+      <!-- ko template: { name: 'CategoryMenuItemViewModel.categorySisterAndChildrenNavigation',
+                          data: {
+                            title: window.ogs.gsa.resources.Product_CategoryFilterText,
+                            categories: category().subCategories
+                          }
+                        } -->
+      <!-- /ko -->
+    </div>
+    <div role="main">
+      <!-- ko template: { name: 'Category.endCap' } -->
+      <!-- /ko -->
+    </div>
+    <div role="complementary">
+      <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+        ad: {
+          location: 279,
+          conditions: { isVisible: true },
+          adTokensAccessor: adTokensAccessor,
+          triggers: {
+            localEvents: [
+              category
+            ]
+          }
+        }">
+      </div>
+      <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+        ad: {
+          location: 280,
+          conditions: { isVisible: true },
+          adTokensAccessor: adTokensAccessor,
+          triggers: {
+            localEvents: [
+              category
+            ]
+          }
+        }">
+      </div>
+      <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+        ad: {
+          location: 281,
+          conditions: { isVisible: true },
+          adTokensAccessor: adTokensAccessor,
+          triggers: {
+            localEvents: [
+              category
+            ]
+          }
+        }">
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.error">
+  <div data-bind="html: html">
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.landing">
+  <div role="navigation">
+  </div>
+  <div role="main">
+    <h1 data-bind="text: welcomeMessage, visible: welcomeMessage"></h1>
+    <iframe frameBorder="0" data-bind="attr: { src: landingPageCustomUrl }"></iframe>
+    <section data-bind="with:featuredProductsListing">
+      <h1 data-bind="text: ogs.gsa.resources.Landing_Popular_Title"></h1>
+      <!-- ko template: {name: 'ProductListingViewModel.list'} -->
+      <!-- /ko -->
+    </section>
+  </div>
+  <div role="complementary">
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 276,
+        conditions: { isVisible: true }
+      }">
+    </div>
+    <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+      ad: {
+        location: 277,
+        conditions: { isVisible: true }
+      }">
+    </div>
+
+    <aside class="popularProducts" data-bind="with:specialProductsListing">
+      <h1 data-bind="text: ogs.gsa.resources.Landing_Specials_Title"></h1>
+      <!-- ko template: {name: 'ProductListingViewModel.list'} -->
+      <!-- /ko -->
+    </aside>
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.circular">
+  <div role="main" data-bind="loadingScreen: pageLoading">
+    <div class="listingControls">
+      <!-- ko template: 'CircularViewModel.paging' --><!-- /ko -->
+    </div>
+    <!-- ko template: 'CircularViewModel.interactivePage' --><!-- /ko -->
+    <div class="listingControls bottom">
+      <!-- ko template: 'CircularViewModel.paging' --><!-- /ko -->
+    </div>
+  </div>
+  <div role="complementary">
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 291,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [pages]
+        }
+      }">
+    </div>
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 292,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [pages]
+        }
+      }">
+    </div>
+    <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+      ad: {
+        location: 293,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [pages]
+        }
+      }">
+    </div>
+  </div>
+
+  <!-- ko with: circularItemProductListingDialog() -->
+    <div data-bind="
+      dialog: {
+        title: title,
+        template: { name: 'CircularItemDialogViewModel.dialog' },
+        isActive: active,
+        isModal: true,
+        closeCallback: close,
+        closeOnBlur: true,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      },
+      css: {circularWithoutImage: !item() || !item().productsImage()}">
+    </div>
+  <!-- /ko -->
+  <!-- ko with: circularItemDetailsDialog() -->
+    <div data-bind="
+      dialog: {
+        title: title,
+        template: { name: 'CircularItemDetailsDialogViewModel.dialog' },
+        isActive: active,
+        isModal: true,
+        closeCallback: close,
+        closeOnBlur: true,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      }">
+    </div>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.list">
+  <div role="navigation">
+    <!-- ko template: { name: 'ProductBrowsing.facets', data: productListing() } -->
+    <!-- /ko -->
+  </div>
+  <div role="main" class="productList" data-bind="loadingScreen: (loading() || productListing().loadingData())">
+    <!-- ko template: 'ShoppingListViews.list' --><!-- /ko -->
+  </div>
+  <div role="complementary">
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 294,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [
+            productListing().pageChanged,
+            productListing().productsFiltered
+          ]
+        }
+      }">
+    </div>
+    <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="
+      ad: {
+        location: 295,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [
+            productListing().pageChanged,
+            productListing().productsFiltered
+          ]
+        }
+      }">
+    </div>
+    <div class="ad-wide-skyscraper" data-size="wide-skyscraper" data-bind="
+      ad: {
+        location: 296,
+        conditions: { isVisible: true },
+        triggers: {
+          localEvents: [
+            productListing().pageChanged,
+            productListing().productsFiltered
+          ]
+        }
+      }">
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="ProductBrowsingEngine.contactUs">
+  <div class="contact-us">
+
+    <section>
+      <h2 data-bind="text: ogs.gsa.resources.ContactUs_MainHeader"></h2>
+      <p data-bind="html: ogs.gsa.resources.ContactUs_MainDescription.
+                                formatWith({hours: contactInfo.Hours,
+                                            phone: contactInfo.Address.Phone1.Number,
+                                            serviceName: contactInfo.CustomerServiceName})">
+      </p>
+    </section>
+
+    <section class="email">
+      <h2 data-bind="text: ogs.gsa.resources.ContactUs_EmailHeader"></h2>
+
+      <ul>
+        <li>
+          <label data-bind="text: ogs.gsa.resources.ContactUs_EmailTypeLabel"></label> <br />
+          <select data-bind="options: contactInfo.ContactTopics, optionsText: 'Name', value: selectedFeedbackTopic"></select>
+        </li>
+        <li>
+          <label data-bind="text: ogs.gsa.resources.ContactUs_EmailAddressLabel"></label>
+          <span data-bind="validationNotification: email"></span><br />
+          <input data-bind="value: email" type="text"/>
+        </li>
+        <li>
+          <label data-bind="text: ogs.gsa.resources.ContactUs_EmailMessageContentLabel"></label>
+          <span data-bind="validationNotification: emailMessage"></span>
+          <textarea data-bind="value: emailMessage"></textarea>
+        </li>
+      </ul>
+
+      <button data-bind="text: ogs.gsa.resources.ContactUs_EmailSubmitButtonText, click: sendEmail"></button>
+    </section>
+
+    <section class="phone">
+      <h2 data-bind="text: ogs.gsa.resources.ContactUs_PhoneHeader"></h2>
+      <p data-bind="text: ogs.gsa.resources.ContactUs_PhoneText.
+                              formatWith({hours: contactInfo.Hours,
+                              phone: contactInfo.Address.Phone1.Number})">
+      </p>
+    </section>
+
+    <section class="mail">
+      <h2 data-bind="text: ogs.gsa.resources.ContactUs_MailHeader"></h2>
+      <!-- ko template: {name : 'Address', data: contactInfo.Address } --><!-- /ko -->
+    </section>
+
+  </div>
+  </script>
+
+<script type="text/html" id="ProductBrowsingEngine.viewengine.views.customContent">
+  <iframe frameBorder="0" class="customContent" data-bind="attr: { src: contentUrl }"></iframe>
+</script>
+<script type="text/html" id="ProductBrowsingViewModel.listing">
+  <h2 data-bind="text: browseTitle, css: { searchResultsTitle: isSearchResultsListing }"></h2>
+  <!-- ko if: isSearchResultsListing && ogs.gsa.storeSettings.SupportsUserDefinedItems -->
+    <a href="#" data-bind="text: window.ogs.gsa.resources.Search_CantFindItLinkText, click: createCustomItem"></a>
+  <!-- /ko -->
+  <div class="listingControls" data-bind="if: products().length > 0">
+    <div class="views">
+      <label data-bind="text: ogs.gsa.resources.Product_ViewsTitle"></label>
+      <ul>
+        <li>
+          <a href="#list-view" data-bind="
+            click: toggleListViewType.bind($data, 'list'),
+            css: { active: listViewType() === 'grid' },
+            title: ogs.gsa.resources.Product_ListViewNameTooltip,
+            text: ogs.gsa.resources.Product_ListViewName" ></a>
+        </li>
+        <li class="last">
+          <a href="#grid-view" data-bind="
+            click: toggleListViewType.bind($data, 'grid'),
+            css: { active: listViewType() === 'list' },
+            title: ogs.gsa.resources.Product_GridViewNameTooltip,
+            text: ogs.gsa.resources.Product_GridViewName" ></a>
+        </li>
+      </ul>
+    </div>
+    <nav class="sort">
+      <label data-bind="
+        text: ogs.gsa.resources.Product_SortName,
+        title : ogs.gsa.resources.Product_SortNameTooltip">
+      </label>
+      <select data-bind="options: sortOptions(), optionsValue: 'SortQueryPart', optionsText: 'Name', value: selectedSort">
+      </select>
+    </nav>
+    <nav class="paging" data-bind="pagingTemplate: {
+      name : 'pagingTemplate.listPaging',
+      data: groceryList(),
+      pagingCallback : changePage}">
+    </nav>
+  </div>
+
+  <div class="ad-leaderboard" data-size="leaderboard" data-bind="
+    ad: {
+      location: 287,
+      adTokens : adTokens,
+      triggers : {
+        localEvents : [
+          pageChanged,
+          productsFiltered,
+          productsSorted,
+          viewTypeChanged
+        ]
+      }
+    }">
+  </div>
+
+  <!-- ko template: {name: 'ProductListingViewModel.list' } -->
+  <!-- /ko -->
+
+  <div class="listingControls bottom">
+    <nav class="paging" data-bind="pagingTemplate: {
+      name : 'pagingTemplate.listPaging',
+      data: groceryList(),
+      pagingCallback : changePage}">
+    </nav>
+  </div>
+</script>
+
+<script type="text/html" id="ProductListingViewModel.list">
+  <!-- ko if: products().length == 0 && !loadingData() -->
+  <span class="noProductsText" data-bind="text: noProductsText"></span>
+  <!-- /ko -->
+  <!-- ko if: products().length -->
+    <div data-bind="viewEngine: {data: products, scrollTopOnChange: true}">
+      <ul class="products" data-bind="
+          foreach: products,
+          css: { listView: listViewType() === 'list' }">
+        <!-- ko template: { name: 'ProductViewModel.product' } -->
+        &nbsp;
+        <!-- /ko -->
+      </ul>
+    </div>
+  <!-- /ko -->
+</script>
+<!-- Category View Model only displays top two categories -->
+<script id="CategoryViewModel.list" type="text/html">
+  <ul class="menu categoryMenu"
+      data-bind="slideVisibleVertical: active,
+                  slidingSpeed: window.ogs.config.Settings.MenuAnimationSlidingSpeed,
+                  css: { expanded: activeCategory() != null && isCategoryFlyoutEnabled }">
+
+    <!-- ko if: ogs.config.Settings.ShowCustomCategoriesOnTopOfCategoriesList -->
+
+      <!-- ko foreach: customCategories() -->
+        <!-- ko template: { name: 'CategoryViewModel.listItem', data: $data } -->
+        <!-- /ko -->
+      <!-- /ko -->
+
+      <li class="divider"></li>
+
+      <!-- ko foreach: categories -->
+        <!-- ko template: { name: 'CategoryViewModel.listItem', data: $data } -->
+        <!-- /ko -->
+      <!-- /ko -->
+
+    <!-- /ko -->
+
+    <!-- ko if: ogs.config.Settings.ShowCustomCategoriesOnTopOfCategoriesList === false -->
+
+      <!-- ko foreach: categories -->
+        <!-- ko template: { name: 'CategoryViewModel.listItem', data: $data } -->
+        <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- if: customCategories().length > 0 -->
+        <li class="divider"></li>
+        <!-- ko foreach: customCategories() -->
+          <!-- ko template: { name: 'CategoryViewModel.listItem', data: $data } -->
+          <!-- /ko -->
+        <!-- /ko -->
+      <!-- /ko -->  
+  
+    <!-- /ko --> 
+  </ul>
+</script>
+
+<script id="CategoryViewModel.listItem" type="text/html">
+  <li data-bind="smoothHoverBool: visible">
+    <a href="#" data-bind="
+      css: { active: shouldShowSubCategories },
+      click: viewCategory">
+      <span data-bind="text: category().Name"></span>
+    </a>
+    <section data-bind="fadeVisible: visible, wrapperSelector: '.categoryMenu'">
+      <div>
+        <h2 data-bind="text: category().Name"></h2>
+        <ul data-bind="foreach: subCategories()">
+          <li>
+            <a href="#" data-bind="
+                    text: category().Name,
+                    click: viewCategory">
+            </a>
+          </li>
+        </ul>
+        <div class="ad-medium-rectangle" data-size="medium-rectangle" data-bind="ad: {
+            location: 278,
+            conditions: {
+              isTrue: visible
+            },
+            triggers: {
+              localEvents: [visible]
+            },
+            adTokens: adTokensAccessor()
+          }">
+        </div>
+      </div>
+    </section>
+  </li>
+</script>
+
+<script type="text/html" id="Category.endCap">
+  <div id="endCap" >
+    <h2 data-bind="template: { name : 'CategoryMenuItem.header', data: category() } "></h2>
+    <section data-bind="with: popularProducts">
+      <h2 data-bind="text: ogs.gsa.resources.Product_PopularProducts"></h2>
+      <!-- ko template: {name: 'ProductListingViewModel.list'} -->
+      <!-- /ko -->
+    </section>
+  </div>
+</script>
+
+<script type="text/html" id="CategoryMenuItem.header">
+  <span data-bind="text: category().Name"></span>
+  <img data-bind="imgSrc: { image: category().ImageLinks.banner }"/>
+</script>
+
+<script type="text/html" id="CategoryMenuItemViewModel.categorySisterAndChildrenNavigation">
+  <!-- ko if: (!$parent.sisterCategories && categories() && categories().length > 0) ||
+        ($parent.sisterCategories && categories() && categories().length > 1) -->
+    <nav>
+      <section>
+        <h3 data-bind="text: title"></h3>
+        <ul>
+          <!-- ko if: $data.activeCategory -->
+          <li>
+            <span class="active" data-bind="
+              text: $data.activeCategory().category().Name" ></span>
+          </li>
+          <!-- /ko -->
+          <!-- ko foreach: categories() -->
+            <!-- ko if: !$parent.activeCategory || category().Id !== $parent.activeCategory().category().Id -->
+              <li>
+                <a href="#" data-bind="
+                  text: category().Name,
+                  click: viewCategory,
+                  attr: { title: ogs.gsa.resources.Product_CategoryItemToolTip }" ></a>
+              </li>
+            <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+      </section>
+    </nav>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="BreadcrumbsViewModel.crumbsList">
+  <!-- ko foreach: breadcrumbs -->
+    <li>
+      <!-- ko if: !active() -->
+        <a href="" data-bind="text: name, click: callback"></a>
+        <span class="ieAfter"></span>
+      <!-- /ko -->
+      <!-- ko if: active() -->
+        <span data-bind="text: name"></span>
+      <!-- /ko -->
+    </li>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="Category.endCap.icons">
+  <section>
+    <h2 data-bind="text: category().name() + ' Categories' "></h2>
+    <ul class="subCategory" data-bind="foreach: category().categories">
+      <li data-bind="click: $data.viewCategory">
+        <figure>
+          <img data-bind="attr: { src: $data.imageLinks().icon, title: $data.name }">
+          <figcaption data-bind="text: $data.name"></figcaption>
+        </figure>
+      </li>
+    </ul>
+  </section>
+</script>
+<!-- <CircularMenuViewModel views> -->
+  <script type="text/html" id="CircularMenuViewModel.list">
+    <ul class="menu" 
+        data-bind="slideVisibleVertical: active,
+                    slidingSpeed: window.ogs.config.Settings.MenuAnimationSlidingSpeed,
+                    loadingScreen: loading">
+      <!-- ko if: circulars().length > 0 -->
+        <!-- ko foreach: circulars -->
+          <li data-bind="click: viewCircular">
+            <div class="image">
+              <img data-bind="attr: { src: circular().ImageLinks.preview }" />
+            </div>
+            <h2 data-bind="text: circular().Name"></h2>
+            <label data-bind="text: circular().CircularValidText"></label>
+          </li>
+        <!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko if: circulars().length === 0 && loading() === false -->
+        <li class="none">
+          <h3 data-bind="text: window.ogs.gsa.resources.Circulars_NoCircularsAvailableText"></h3>
+        </li>
+      <!-- /ko -->
+    </ul>
+  </script>
+<!-- </CircularMenuViewModel views> -->
+
+<!-- <CircularViewModel views> -->
+  <script type="text/html" id="CircularViewModel.paging">
+   <!-- ko if: pages -->
+      <nav class="paging" data-bind="pagingTemplate: {
+          name : 'pagingTemplate.simpleListPaging',
+          data: {
+            ItemCount : pages().PageCount,
+            Skip : pages().Skip,
+            Take : pages().Take,
+            Items : pages().Pages,
+          },
+          pagingCallback : changePagePromise }">
+      </nav>
+    <!-- /ko -->
+  </script>
+
+<script type="text/html" id="CircularViewModel.interactivePage">
+  <!-- ko if: currentPage -->
+  <div id="circularPage">
+    <div class="currentPage">
+      <a class="previousPage" data-bind="click: changePagePromise.bind($data, { skip: pages().Skip - 1, page: pages().Skip }), visible: pages().Skip > 0">
+        <span class="leftBookTop">
+          <span class="leftBookBot">
+            <span class="leftBookMid">
+            &nbsp;
+            </span>
+          </span>
+        </span>
+      </a>
+      <img data-bind="
+          attr : {src : currentPage().PageImageLinks.raw },
+          circularItemImageMap : {
+            circularItems : currentPage().Items,
+            activeItem : activeCircularItem
+          },
+          event: { load: circularImgLoaded, error: circularImgLoaded }" >
+      <aside data-bind="toolTip : activeCircularItem()">
+        <!-- ko with: activeCircularItem -->
+        <div>
+          <p>
+            <span data-bind="text: item().Title"></span>
+            <span data-bind="truncatedText: item().Description, maxTextLength:50"></span>
+            <label data-bind="text: item().PriceString, css: { informationalItemPrice: item().ItemType === 'Informational' }"></label>
+          </p>
+          <div data-bind="visible: item().ItemImageLinks.thumbnail">
+            <div class="image">
+              <img data-bind="imgSrc: { image: item().ItemImageLinks.thumbnail, fallback: ogs.config.ProductImageFallbackSmall }" />
+            </div>
+          </div>
+        </div>
+        <label data-bind="text: $parent.viewDetailsText()"></label>
+        <!-- /ko -->
+      </aside>
+      <a class="nextPage" data-bind="click: changePagePromise.bind($data, { skip: pages().Skip + 1, page: pages().Skip + 2 }), visible: pages().Skip < pages().PageCount - 1">
+        <span class="rightBookTop">
+          <span class="rightBookBot">
+            <span class="rightBookMid">
+            &nbsp;
+            </span>
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+  <!-- /ko -->
+</script>
+<!-- </CircularViewModel views> -->
+
+<!-- <CircularItemDialogViewModel views> -->
+  <script type="text/html" id="CircularItemDialogViewModel.dialog">
+    <!-- ko with: item -->
+
+      <!-- ko if: productsImage -->
+        <div class="dialogLeftContent">
+          <img data-bind="imgSrc: { image: productsImage, fallback: ogs.config.ProductImageFallbackLarge }"/>
+        </div>
+      <!-- /ko -->
+
+      <div class="dialogMainContent">
+        <div data-bind="visible: groceryList() && groceryList().ItemCount > 6">
+          <nav class="paging" data-bind="pagingTemplate: {
+            name : 'pagingTemplate.listPaging',
+            data: groceryList(),
+            pagingCallback : changePage
+          }">
+          </nav>
+        </div>
+        <!-- ko template: {name: 'ProductListingViewModel.list' } -->
+        <!-- /ko -->
+
+      </div>
+    <!-- /ko -->
+    <nav>
+        <button data-bind="text: ogs.gsa.resources.Circulars_BackToCircularButtonText, click: close"></button>
+    </nav>
+  </script>
+<!-- </CircularItemDialogViewModel views> -->
+
+<!-- <CircularItemDetailsDialogViewModel views> -->
+  <script type="text/html" id="CircularItemDetailsDialogViewModel.dialog">
+    <!-- ko with: item -->
+      <!-- ko if: ItemImageLinks.large -->
+        <div class="dialogLeftContent">
+          <img data-bind="imgSrc: { image: ItemImageLinks.large, fallback: ogs.config.ProductImageFallbackLarge }"/>
+        </div>
+      <!-- /ko -->
+      <div class="dialogMainContent circularItem">
+          <pre data-bind="text: Description"></pre>
+      </div>
+    <!-- /ko -->
+    <nav>
+      <button data-bind="text: ogs.gsa.resources.Circulars_BackToCircularButtonText, click: close"></button>
+    </nav>
+  </script>
+<!-- </CircularItemDetailsDialogViewModel views> -->
+
+<script type="text/html" id="ProductBrowsingEngine.reviewCart">
+  <div role="main">
+    <!-- ko template: { name: 'Checkout.messages', data: checkoutMessages } --><!-- /ko -->
+    <!-- ko template: { name: 'CartViewModel.cartSummaryTablet', data: $data } --><!-- /ko -->
+    <header>
+      <div class="cartControls">
+        <span data-bind="visible: showSaveToListLink">
+          <a href="#" data-bind="
+            css: { disabled: cartItems().length == 0 },
+            click: addCartToList,
+            text: ogs.gsa.resources.ViewCart_SaveCartToList">
+          </a>
+        </span>
+        <span>
+          <a href="#" data-bind="
+            css: { disabled: cartItems().length == 0 },
+            click: confirmEmptyCart,
+            text: ogs.gsa.resources.ViewCart_EmptyCartText">
+          </a>
+        </span>
+      </div>
+      <h2><span data-bind="text: ogs.gsa.resources.ViewCart_MyCartText"></span></h2>
+    </header>
+    <ul id="cartList">
+      <li class="listHeader">
+        <label class="first">&nbsp;</label>
+        <label class="second" data-bind="text: ogs.gsa.resources.ViewCart_DescriptionText"></label>
+        <label class="third" data-bind="text: ogs.gsa.resources.ViewCart_PriceText"></label>
+        <label class="fourth">&nbsp;</label>
+        <label class="fifth" data-bind="text: ogs.gsa.resources.ViewCart_QuantityText"></label>
+        <label class="sixth" data-bind="text: ogs.gsa.resources.ViewCart_TotalText"></label>
+      </li>
+      <!-- ko if: unavailableCartItems().length !== 0 -->
+        <li class="category-header">
+          <h3 data-bind="text: window.ogs.gsa.resources.ViewCart_UnavailableCartItemsCategoryText"></h3>
+        </li>
+        <li>
+          <ul data-bind="lazyForeach: unavailableCartItems">
+            <li class="unavailableItem" data-bind="template : 'CartViewModel.unavailableItem'"></li>
+          </ul>
+        </li>  
+      <!-- /ko -->
+      <li data-bind="with: sortedCartItemsByCategory">
+        <ul data-bind="lazyForeach: $data">
+          <!-- ko if: $parent.indexOf($data) === 0 || $parent[$parent.indexOf($data)-1].model.Category !== $data.model.Category -->
+            <li class="category-header">
+              <h3 data-bind="text: model.Category"></h3>
+            </li>
+          <!-- /ko -->
+          <li data-bind="template : 'CartViewModel.item'"></li>
+        </ul>
+      </li>
+      <!-- /ko -->
+    </ul>
+  </div>
+  <div role="complementary">
+    <!-- ko template: { name: 'CartViewModel.cartSummary', data: $data } --><!-- /ko -->
+    <!-- ko template: { name: 'ReserveTimeSlotViewModel.view', data: timeslotReserve } --><!-- /ko -->
+
+    <!-- ko if: supportsSubstitutions() -->
+      <section id="allowSubs">
+        <label>
+          <input type="checkbox" data-bind="simpleChecked: allowSubs" />
+          <span data-bind="text: ogs.gsa.resources.ViewCart_AllowSubstitutionsText"></span>
+          <a class="substitutionPolicyInfo" href="#cartNote" data-bind="text: ogs.gsa.resources.ViewCart_AllowSubstitutionsDetailsText, click: showSubstitutionPolicy"></a>
+        </label>
+      </section>
+    <!-- /ko -->
+
+    <!-- ko if: showComments() -->
+      <section id="cartNote">
+        <h4 data-bind="text: ogs.gsa.resources.ViewCart_CartCommentsLabel"></h4>
+        <textarea data-bind="
+          value: comments,
+          placeholder : ogs.gsa.resources.ViewCart_GeneralCommentsText,
+          valueUpdate: 'afterkeydown',
+          event: {blur: saveComments}">
+        </textarea>
+      </section>
+    <!-- /ko -->
+  </div>
+</script>
+
+<script type="text/html" id="CartViewModel.cartSummary">
+  <section class="fullCartSummary">
+    <!-- ko template: { name: 'CartViewModel.cartSummaryTotal', data: $data } --><!-- /ko -->
+    <section>
+    <!-- ko if: supportsAgeRestriction -->
+      <!-- ko template: { name: 'CartViewModel.cartSummaryAgeRestriction', data: $data } --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko template: { name: 'CartViewModel.cartSummarySubmit', data: $data } --><!-- /ko -->
+    </section>
+  </section>
+</script>
+
+<script type="text/html" id="CartViewModel.cartSummaryTablet">
+  <div class="tablet-summary">
+    <section class="fullCartSummary">
+      <div>
+        <section class="cartTotal">
+          <!-- ko template: { name: 'CartViewModel.cartSummaryTotal', data: $data } --><!-- /ko -->
+        </section>
+        <!-- ko template: { name: 'ReserveTimeSlotViewModel.view', data: timeslotReserve } --><!-- /ko -->
+      </div>
+      <section class="cartConditions">
+      <!-- ko if: supportsAgeRestriction -->
+        <!-- ko template: { name: 'CartViewModel.cartSummaryAgeRestriction', data: $data } --><!-- /ko -->
+      <!-- /ko -->
+      <!-- ko template: { name: 'CartViewModel.cartSummarySubmit', data: $data } --><!-- /ko -->
+      </section>
+    </section>
+  </div>
+</script>
+
+<script type="text/html" id="CartViewModel.cartSummaryTotal">
+  <h1>
+    <span data-bind="text: ogs.gsa.resources.ViewCart_CartSummaryText"></span>
+    <span>
+      <em data-bind="text: window.ogs.gsa.resources.ViewCart_ItemsText.replace('{itemCount}', cartQuantity())"></em>
+    </span>
+  </h1>
+  <h2>
+    <span data-bind="text: ogs.gsa.resources.ViewCart_EstSubtotalText"></span>
+    <span data-bind="text: cartTotal"></span>
+    <div class="accessibilityAlert" role="alert" data-bind="html: ogs.gsa.resources.Accessibility_CartUpdatedAlert.formatWith({total: cartTotal()})"></div>
+  </h2>
+</script>
+
+<script type="text/html" id="CartViewModel.cartSummaryAgeRestriction">
+    <h4 data-bind="text: ogs.gsa.resources.ViewCart_ConditionsOfPurchaseText"></h4>
+    <div data-bind="html: ageRestrictionText"></div>
+    <label id="AgeRestriction">
+      <input type="checkbox" data-bind="checked: isAgeRestrictionChecked"/>
+      <span data-bind="text: ogs.gsa.resources.ViewCart_AcceptConditionsOfPurchaseText"></span>
+    </label>
+</script>
+
+<script type="text/html" id="CartViewModel.cartSummarySubmit">
+  <button class="cartSubmit" data-bind="
+    click: proceedToCheckout,
+    text: ogs.gsa.resources.ViewCart_CheckoutText">
+  </button>
+</script>
+
+<script type="text/html" id="CartViewModel.item">
+  <div class="image" data-bind="click: select, css: {clickable: !isUserDefinedItem}">
+    <!-- ko template: 'ProductViewModel.flags' --><!-- /ko -->
+    <img data-bind="attr: { alt: model.Brand +' '+ model.Name },
+                    imgSrc: { image: imagePaths.large, fallback: ogs.config.ProductImageFallbackLarge }"/>
+  </div>
+  <div class="text second">
+    <a href="#" data-bind="click: select, css: {resetPointer: isUserDefinedItem}, attr: {'aria-label': ogs.gsa.resources.Accessibility_AcessProductDetails}">
+      <span data-bind="text: model.Brand"></span>
+      <span data-bind="text: model.Name"></span>
+    </a>
+    <span data-bind="text: size().Size"></span>
+    <p data-bind="html: model.Description"></p>
+    <!-- ko template: { name: 'CartViewModel.notes' } -->
+    <!-- /ko -->
+  </div>
+  <div class="text third">
+    <label data-bind="text: model.CurrentPrice, css: {sale: model.Sale !== null}" ></label>
+    <!-- ko if: model.Sale !== null || model.PointRedemptionInfo !== null-->
+      <div class="saleInformation" data-bind="click: select">
+        <!-- ko template: { name: 'ProductViewModel.sale' } -->
+        <!-- /ko -->
+      </div>
+    <!-- /ko -->
+  </div>
+  <div class="weight fourth">&nbsp;</div>
+  <div class="actions fifth">
+    <!-- ko if: model.InStock -->
+      <!-- ko template: { name: 'CartViewModel.weight' } -->
+      <!-- /ko -->
+      <div class="quantitySpinner" data-bind="visible: size().quantity() > 0">
+      <button class="decrease" data-bind="click: decrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_DecreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">-</button>
+      <label data-bind="text: size().quantity"></label>
+      <button class="increase" data-bind="click: incrementQuantity, attr: { 'aria-label': ogs.gsa.resources.Accessibility_IncreaseProduct.formatWith({brand: model.Brand, product: model.Name})}">+</button>
+      </div>
+    <!-- /ko -->
+    <!-- ko ifnot: model.InStock -->
+    <span class="outOfStockFlag" data-bind="text: ogs.gsa.resources.ViewCart_OutOfStockText"></span>
+    <!-- /ko -->
+    <a href="#" data-bind="
+      click: remove,
+      text: ogs.gsa.resources.ViewCart_RemoveItemText,
+      attr: { 'aria-label': ogs.gsa.resources.Accessibility_RemoveItem.formatWith({brand: model.Brand, product: model.Name})}">	  
+    </a>
+  </div>
+  <label data-bind="text: lineTotal, css: {sale: model.Sale !== null}" class="sixth"></label>
+</script>
+<script type="text/html" id="CartViewModel.unavailableItem">
+  <div class="image">
+    <img data-bind="attr: { alt: model.Brand +' '+ model.Name },
+                    imgSrc: { image: imagePaths.large, fallback: ogs.config.ProductImageFallbackLarge }"/>
+  </div>
+  <div class="text second unavailableItemDescription">
+    <span data-bind="text: model.Brand"></span>
+    <span data-bind="text: model.Name"></span>
+    <span class="itemSize" data-bind="text: size().Size"></span>
+    <p data-bind="html: model.Description"></p>
+  </div>
+  <div class="unavailableItemMessage">
+    <label data-bind="text: window.ogs.gsa.resources.ViewCart_UnavailableCartItemMessageText"></label>
+  </div>
+</script>
+<script type="text/html" id="CartViewModel.notes">
+  <div>
+    <input data-bind="
+      value: note,
+      executeOnEnter: note.toggleEditing,
+      valueUpdate: 'afterkeydown',
+      placeholder: ogs.gsa.resources.ViewCart_EnterANoteText,
+      visible: note() || note.isEditing(),
+      disable: !note.isEditing(),
+      hasFocus: note.isEditing(),
+      attr: { 'aria-label': ogs.gsa.resources.Accessibility_InputNoteLabel.formatWith({brand: model.Brand, product: model.Name})}, 
+      css: { active: note.isEditing() }" maxlength="200"/>
+
+    <a href="#" data-bind="
+      click: note.toggleEditing,
+      visible: !note.isEditing(),
+      attr: note() ? { 'aria-label': ogs.gsa.resources.Accessibility_EditShopperNote.formatWith({brand: model.Brand, product: model.Name})} : { 'aria-label': ogs.gsa.resources.Accessibility_AddShopperNote.formatWith({brand: model.Brand, product: model.Name})},
+      text: note() ? ogs.gsa.resources.ViewCart_EditNoteText : ogs.gsa.resources.ViewCart_AddNoteText"></a>
+    <a href="#"  data-bind="
+      click: note.toggleEditing,
+      visible: note.isEditing(),
+      attr: { 'aria-label': ogs.gsa.resources.Accessibility_SaveShopperNote.formatWith({brand: model.Brand, product: model.Name})},
+      text: ogs.gsa.resources.ViewCart_SaveNoteText">
+    </a>
+  </div>
+</script>
+
+<script type="text/html" id="CartViewModel.weight">
+  <!-- ko if: sizes.length > 1 -->
+    <label class="weightDropDown">
+      <select data-bind="
+        options: sizes,
+        optionsText: 'Size',
+        value: size,
+        attr: { 'aria-label': ogs.gsa.resources.Accessibility_WeightDropDown.formatWith({brand: model.Brand, product: model.Name, weight: size().Size })},
+        enable: !sizeIsChanging()">
+      </select>
+    </label>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="OrderManagementViewModel.section">
+  <!-- ko if: orders.length > 0 -->
+    <h3 data-bind="text: title"></h3>
+    <div>
+      <table>
+        <thead><tr>
+          <th data-bind="text: ogs.gsa.resources.ManageOrders_OrderPlacedHeader"></th>
+          <th data-bind="text: ogs.gsa.resources.ManageOrders_OrderNumberHeader"></th>
+          <th data-bind="text: ogs.gsa.resources.ManageOrders_DateAndTimeHeader"></th>
+          <th data-bind="text: ogs.gsa.resources.ManageOrders_OrderTotalHeader"></th>
+        </tr></thead>
+        <tbody data-bind="foreach: orders">
+          <tr>
+            <td width="15%" data-bind="isoDate: $data.DatePlaced, format: ogs.gsa.resources.Format_ShortDate" ></td>
+            <td width="15%">
+              <a href="#" data-bind="text: $data.OrderId, click: $parent.detail, attr: {'aria-label':ogs.gsa.resources.Accessibility_LinkOrderDetails}"></a>              
+            </td>
+            <td width="30%">
+              <span data-bind="text: $data.FulfillmentType"></span>
+              <span data-bind="isoDate: $data.FulfillmentDateTime, format: ogs.gsa.resources.Format_ShortDate"></span>
+              <span data-bind="isoDate: $data.FulfillmentDateTime, format: ogs.gsa.resources.Format_ShortTime"></span>
+            </td>
+            <td width="20%" data-bind="text: $data.OrderTotal"></td>
+            <td width="20%" class="actions">
+              <!-- ko if: allowChangeOrder -->
+                <span>
+                  <a href ="#" data-bind="click: $parent.change, text: ogs.gsa.resources.ManageOrders_ChangeOrderText, attr: {'aria-label': ogs.gsa.resources.Accessibility_OrderNumber.formatWith({number: $data.OrderId})}"></a>
+                </span>
+                <span>
+                  <a href ="#" data-bind="click: $parent.cancel, text: ogs.gsa.resources.ManageOrders_CancelOrderText, attr: {'aria-label': ogs.gsa.resources.Accessibility_OrderNumber.formatWith({number: $data.OrderId})}"></a>
+                </span>
+              <!-- /ko -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <!-- /ko -->
+</script>
+
+
+<script type="text/html" id="OrderManagementViewModel.listing">
+  <div id="ordersList">
+    <h2 data-bind="text: ogs.gsa.resources.Confirmation_ManageOrdersButtonText"></h2>
+    <section data-bind="if: allOrders().length === 0">
+      <p data-bind="html: ogs.gsa.resources.ManageOrders_NoOrdersMessage"></p>
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : newOrders(),
+          title : ogs.gsa.resources.ManageOrders_NewOrdersText,
+          cancel : confirmCancelOrder,
+          change : changeOrder,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : processingOrders(),
+          title : ogs.gsa.resources.ManageOrders_ProcessingOrdersText,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : completedOrders(),
+          title : ogs.gsa.resources.ManageOrders_CompletedOrdersText,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : canceledOrders(),
+          title : ogs.gsa.resources.ManageOrders_CanceledOrdersText,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : voidedOrders(),
+          title : ogs.gsa.resources.ManageOrders_VoidedOrdersText,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+    <section data-bind="
+      template: {
+        name : 'OrderManagementViewModel.section',
+        data: {
+          orders : csReviewOrders(),
+          title : ogs.gsa.resources.ManageOrders_CustomerServiceReviewOrdersText,
+          detail: viewOrderDetail
+        }
+      }">
+    </section>
+
+  </div>
+</script>
+
+
+<script type="text/html" id="OrderManagementViewModel.detail">
+    <!-- ko if: order().OrderId -->
+    <div id="orderDetail">
+        <h1 data-bind="text: ogs.gsa.resources.OrderDetail_OrderDetailPageHeaderText"></h1>
+        <div class="actions">
+            <button data-bind="text: ogs.gsa.resources.OrderDetail_CancelOrderButtonText, visible: allowChangeOrder, click: confirmCancelOrder"></button>
+            <button data-bind="text: ogs.gsa.resources.OrderDetail_ChangeOrderButtonText, visible: allowChangeOrder, click: changeOrder"></button>
+        </div>
+        <ul>
+            <li>
+                <strong data-bind="text: ogs.gsa.resources.OrderDetail_OrderNumberLabelText"></strong>: <span data-bind = "text: order().OrderId"></span>
+            </li>
+            <li>
+                <strong data-bind="html: ogs.gsa.resources.OrderDetail_OrderDateAndTimeLabelText"></strong>:
+                <span data-bind="isoDate: order().DatePlaced, format: ogs.gsa.resources.OrderDetail_OrderDatePlacedFormat"></span>
+            </li>
+            <li>
+                <strong data-bind="text: ogs.gsa.resources.OrderDetail_OrderStatusLabelText"></strong>: <span data-bind = "text: order().Status"></span>
+            </li>
+            <li>
+                <strong data-bind="html: ogs.gsa.resources.OrderDetail_OrderFulfillmentLabelText"></strong>:
+                <span data-bind = "text: order().FulfillmentType"></span>
+                <span data-bind="isoDate: order().FulfillmentDateTime, format: ogs.gsa.resources.OrderDetail_OrderDatePlacedFormat"></span>
+            </li>
+    </ul>
+
+    <section data-bind="template: { name : 'OrderDetailItemViewModel.section', data: { items : items(), orderItemDisplayName : orderItemDisplayName } }">
+    </section>
+
+    <section data-bind="template: { name : 'Invoice.summary', 
+                                    data : { title: null, 
+                                             items: invoice, 
+                                             total: { label: ogs.gsa.resources.OrderDetail_OrderTotalLabelText, value: order().OrderTotal }, 
+                                             showOrderSummaryInfoIcon: false 
+                                           }
+                                  }">
+    </section>
+    <!-- ko if: ogs.gsa.storeSettings.SupportsPointsRedemption === false && ogs.gsa.storeSettings.DisplayPointsRedemptionTurnedOffMessage && order().PointsUsedTotal > 0 -->
+     <div id="displayPointsRedemptionTurnedOffMessage">
+      <span data-bind="text: window.ogs.gsa.resources.PointsRedemptionTurnedOffMessage"></span>
+     </div>
+    <!-- /ko -->
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: order().OrderId -->
+  <div id ="orderDetail">
+    <h3 data-bind="text: ogs.gsa.resources.OrderDetail_OrderNotFoundTitle"></h3>
+    <div>
+      <img src='/content/styles/css/images/fallen-cart.jpg' >
+    </div>
+  </div>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="OrderDetailItemViewModel.section">
+  <h3 data-bind="text: ogs.gsa.resources.OrderDetail_OrderItemsLabelText"></h3>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th><label data-bind="text: ogs.gsa.resources.OrderDetail_SKULabelText"></label></th>
+          <th><label data-bind="html: ogs.gsa.resources.OrderDetail_BrandProductNameLabelText"></label></th>
+          <th><label data-bind="text: ogs.gsa.resources.OrderDetail_PriceLabelText"></label></th>
+          <th class="orderRight"><label data-bind="text: ogs.gsa.resources.OrderDetail_QuantityLabelText"></label></th>
+          <!-- ko if: ogs.gsa.storeSettings.SupportsPointsRedemption -->
+          <th class="orderCenterHeader"><label data-bind="text: ogs.gsa.resources.OrderDetail_RedeemPointsLabelText"></label></th>
+          <!-- /ko -->
+          <!-- ko if: ogs.gsa.storeSettings.SupportsPointsRedemption === false && $parents[0].order().PointsUsedTotal > 0 -->
+          <th class="orderCenterHeader"><label data-bind="text: ogs.gsa.resources.OrderDetail_RedeemPointsLabelText"></label></th>
+          <!-- /ko -->
+          <th class="orderRight"><label data-bind="text: ogs.gsa.resources.OrderDetail_ProductTotalsLabelText"></label></th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: items">
+        <tr>
+          <td><span data-bind="text: Sku"></span></td>
+          <td><span data-bind="text: $parent.orderItemDisplayName($data)"></span></td>
+          <td><span data-bind="text: CurrentPrice"></span></td>
+          <td class="orderRight"><span data-bind="text: Quantity"></span></td>
+          <!-- ko if: ogs.gsa.storeSettings.SupportsPointsRedemption -->
+          <!-- ko if: QuantityRedeemedWithPoints === "0" -->
+          <td class="orderCenter"><span data-bind="text: window.ogs.gsa.resources.OrderDetail_NoRedeemedPoints"></span></td>
+          <!-- /ko -->
+          <!-- ko ifnot: QuantityRedeemedWithPoints === "0" -->
+          <td class="orderCenter"><span data-bind="text: window.ogs.gsa.resources.OrderDetail_RedeemedPointsDetails.formatWith({nrOfPointsUsed: NumberOfPoints, redeemedQty: QuantityRedeemedWithPoints })"></span></td>
+          <!-- /ko -->
+          <!-- /ko -->
+          
+          <!-- ko if:  ogs.gsa.storeSettings.SupportsPointsRedemption === false && $parents[1].order().PointsUsedTotal > 0 -->
+          <!-- ko if: QuantityRedeemedWithPoints === "0" -->
+          <td class="orderCenter"><span data-bind="text: window.ogs.gsa.resources.OrderDetail_NoRedeemedPoints"></span></td>
+          <!-- /ko -->
+          <!-- ko ifnot: QuantityRedeemedWithPoints === "0" -->
+          <td class="orderCenter"><span data-bind="text: window.ogs.gsa.resources.OrderDetail_RedeemedPointsDetails.formatWith({nrOfPointsUsed: NumberOfPoints, redeemedQty: QuantityRedeemedWithPoints })"></span></td>
+          <!-- /ko -->
+          <!-- /ko -->
+
+          <td class="orderRight"><span data-bind="text: LineTotal"></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</script>
+
+<!-- Views coupled to ko.bindingHandlers.pagingTemplate
+  {
+      currentPageItemStart : 1,
+      currentPageItemEnd : 15,
+      currentPage : 1,
+      totalPages: 10,
+      totalCount : 149,
+      pages : function() {
+        return [1,2,3,4...];
+      },
+      nextPage : function() {},
+      prevPage : function() {},
+      toPage : function(page) {}
+    }
+-->
+
+<script type="text/html" id="pagingTemplate.simpleItemsPaging">
+  <!-- ko if: totalCount > 0 -->
+    <label >
+      <span data-bind="html: ogs.gsa.resources.Product_PagingStartText"></span>
+      <strong>
+        <span data-bind="text: currentPageItemStart"></span>
+        <span data-bind="html: ogs.gsa.resources.Product_PagingPageSeparatorText"></span>
+        <span data-bind="text: currentPageItemEnd"></span>
+      </strong>
+      <span data-bind="html: ogs.gsa.resources.Product_PagingSeparatorText"></span>
+      <strong data-bind="text: totalCount"></strong>
+      <span data-bind="html: ogs.gsa.resources.Product_PagingEndText"></span>
+    </label>
+    <!-- ko template: 'pagingTemplate.simpleOneAtATimePagingButtons' --><!-- /ko -->
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="pagingTemplate.simpleOneAtATimePagingButtons">
+  <!-- ko if: totalCount > 0 -->
+    <!-- ko if: currentPage > 1 -->
+      <button data-bind="
+        click: prevPage,
+        title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage - 1),
+        attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage - 1) }">
+        &laquo;
+      </button>
+    <!-- /ko -->
+    <!-- ko if: currentPage < totalPages -->
+      <button data-bind="
+        click: nextPage,
+        title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1),
+        attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1) }">
+        &raquo;
+      </button>
+    <!-- /ko -->
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="pagingTemplate.simpleOneAtATimePaging">  
+  <!-- ko if: totalCount > 0 -->
+  <label >
+    <span>Page </span>
+    <strong>
+      <span data-bind="text: currentPage"></span>
+      <span> of </span>
+      <span data-bind="text: totalPages"></span>
+    </strong>
+  </label>
+  <!-- ko template: 'pagingTemplate.simpleOneAtATimePagingButtons' --><!-- /ko -->
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="pagingTemplate.simpleListPaging">
+  <!-- ko if: totalCount > 0 -->
+    <button data-bind="
+                  click: prevPage,
+                  visible: currentPage > 1,
+                  title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage - 1),
+                  attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage - 1) }">
+      &laquo;
+    </button>
+    <ul data-bind="foreach: pages">
+      <li>
+        <!-- ko if: $index() + 1 === $parent.currentPage -->
+          <a class="active" data-bind="
+            title: $index() + 1,
+            text: $index() + 1">
+          </a>
+        <!-- /ko -->
+        <!-- ko ifnot: $index() + 1 === $parent.currentPage -->
+          <a href="#" data-bind="
+            click: $parent.toPage,
+            attr: {'aria-label':ogs.gsa.resources.Accessibility_PageNumber},
+            title: $index() + 1,
+            text: $index() + 1">
+          </a>
+        <!-- /ko -->
+      </li>
+    </ul>
+    <button data-bind="
+        click: nextPage,
+        visible: currentPage < totalPages,
+        title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1),
+        attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1) }">
+        &raquo;
+    </button>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="pagingTemplate.pageAnchor">
+  <!-- ko if: $parent.currentPage === $data -->
+    <a data-bind="
+          text: $data,
+          css: { active: $parent.currentPage === $data }">
+    </a>
+  <!-- /ko -->
+  <!-- ko ifnot: $parent.currentPage === $data -->
+    <a href="#" data-bind="
+          click: $parent.toPage.bind(null, $data),
+          attr: {'aria-label':ogs.gsa.resources.Accessibility_PageNumber},
+          text: $data,
+          css: { active: $parent.currentPage === $data }">
+    </a>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="pagingTemplate.listPaging">
+  <!-- ko if: totalPages > 1 -->
+    <button data-bind="
+                  click: prevPage,
+                  visible: currentPage > 1,
+                  title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + ' ' + (currentPage - 1),
+                  attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage - 1) }">
+      &laquo;
+    </button>
+    <!-- ko if: totalPages < 7 -->
+      <ul data-bind="foreach: pages">
+        <li data-bind="template: { name: 'pagingTemplate.pageAnchor' }"></li>
+      </ul>
+    <!-- /ko -->
+
+    <!-- ko if: totalPages >= 7 -->
+      <ul>
+        <!-- ko if: currentPage ==  4 /* then we need "1 2" */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: 1 }"></li>
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: 2 }"></li>
+        <!-- /ko -->
+
+        <!-- ko if: currentPage > 4 /* then we need "1 ..." */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: 1 }"></li>
+          <li>
+              <span>...</span>
+          </li>
+        <!-- /ko -->
+        <!-- ko if: currentPage === 3 /* then we need "1 " */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: 1 }"></li>
+        <!-- /ko -->
+
+        <!-- ko if: currentPage == totalPages /* then we should print page "38" when 40 pages */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: currentPage - 2 }"></li>
+        <!-- /ko -->
+
+        <!-- ko ifnot: currentPage == 1 /* then we should print previous page */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: currentPage - 1 }"></li>
+        <!-- /ko -->
+
+        <!-- <current page - start here !!!> -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: currentPage }"></li>
+        <!-- </current page - start here !!!> -->
+
+        <!-- ko if: currentPage + 1 <= totalPages /* then we should print next page */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: currentPage + 1 }"></li>
+        <!-- /ko -->
+
+        <!-- ko if: currentPage == 1 /* then we should print page "3" */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: 3 }"></li>
+        <!-- /ko -->
+
+        <!-- ko if: currentPage + 2 == totalPages /* then we should print "40" when 40 pages and current is 38 */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: totalPages }"></li>
+        <!-- /ko -->
+        
+        <!-- ko if: currentPage + 3 == totalPages /* then we should print "39 40" when 40 pages and current is 37 */ -->
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: currentPage + 2 }"></li>
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: totalPages }"></li>
+        <!-- /ko -->
+        
+        <!-- ko if: currentPage + 3 < totalPages /* then we should print "... 40" when 40 pages and current page is 36 */ -->
+          <li>
+            <span>...</span>
+          </li>
+          <li data-bind="template: { name: 'pagingTemplate.pageAnchor', data: totalPages }"></li>
+        <!-- /ko -->
+      </ul>
+    <!-- /ko -->
+
+    <button data-bind="
+        click: nextPage,
+        visible: currentPage < totalPages,
+        title: ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1),
+        attr: { 'aria-label':  ogs.gsa.resources.Product_ItemsPageArrowTooltip + (currentPage + 1) }">
+        &raquo;
+    </button>
+  <!-- /ko -->      
+</script>
+<script type="text/html" id="ShoppingListViews.list">
+  <section>
+    <h2 data-bind="text: list().Name"></h2>
+      <!-- ko if: list().UserDefined -->
+        <ul class="actions">
+          <li><a data-bind="text: ogs.gsa.resources.Lists_RenameText, click: renameList"></a></li>
+          <li><a data-bind="text: ogs.gsa.resources.Lists_DeleteText, click: deleteList"></a></li>
+        </ul>
+      <!-- /ko -->
+  </section>
+  <button data-bind="
+      text: ogs.gsa.resources.List_AddAllToCartButtonText,
+      click: addAllToCart,
+      visible: canAddAllToCart"
+      >
+  </button>
+  <!-- ko if: productListing().products().length > 0 -->
+    <div class="listingControls">
+      <nav class="paging" data-bind="pagingTemplate: {
+        name : 'pagingTemplate.listPaging',
+        data: productListing().groceryList(),
+        pagingCallback : productListing().changePage }">
+      </nav>
+    </div>
+    <!-- ko template: {name: 'ProductListingViewModel.list', data: productListing() } -->
+    <!-- /ko -->
+    <div class="listingControls bottom">
+      <nav class="paging" data-bind="pagingTemplate: {
+        name : 'pagingTemplate.listPaging',
+        data: productListing().groceryList(),
+        pagingCallback : productListing().changePage }">
+      </nav>
+    </div>
+  <!-- /ko -->
+  <!-- ko ifnot: productListing().products().length > 0 -->
+    <p data-bind="text: ogs.gsa.resources.Lists_EmptyListText"></p>
+  <!-- /ko -->
+</script>
+
+<script type="text/html" id="ProductListPlugin.productControl">
+  <div class="listDropdown">
+    <a data-bind="click: toggle, attr: { title: toolTipText }">
+      <!-- ko if: iconUri -->
+        <img data-bind="attr: { src: iconUri }" />
+      <!-- /ko -->
+      <span data-bind="text: name"></span>
+    </a>
+  </div>
+</script>
+
+<script type="text/html" id="ShoppingListsViews.menu">
+  <div class="menu" role="alert" 
+       data-bind="slideVisibleVertical: isActive,
+                  slidingSpeed: window.ogs.config.Settings.MenuAnimationSlidingSpeed">
+    <ul>
+      <!-- ko if: loaded() == false -->
+        <li>
+          <span data-bind="text: ogs.gsa.resources.ContentLoading_Text"></span>
+        </li>
+      <!-- /ko -->
+
+      <!-- ko if: loaded() -->
+        <li class="active" data-bind="with: lists()[0]">
+          <span data-bind="text: ogs.gsa.resources.Lists_ActiveListLabel"></span>
+          <a href="#" class="infoIcon" data-bind="click: $parent.displayListsInfo">?</a>
+          <img data-bind="attr: {src: activeIcon, title: ogs.gsa.resources.Lists_ActiveListTooltip}"/>
+          <a href="#" class="menuOption" data-bind="text: list().Name, click: $parent.viewList, attr: { title:list().Name }"></a>
+          <div class="accessibilityAlert" role="alert" data-bind="html: ogs.gsa.resources.Accessibility_ActiveListAlert.formatWith({list: list().Name})"></div>
+        </li>
+        <li>
+          <a href="#" data-bind="text: ogs.gsa.resources.Lists_CreateNewList, click: createNewList"></a>
+        </li>
+
+        <!-- ko foreach: lists -->
+          <!-- ko if: $index() != 0 -->  
+            <li data-bind="css: {active: isActive}">
+              <a href="#" class="menuOption" data-bind="text: list().Name, click: $parent.viewList, attr: { title:list().Name }"></a>
+              <!-- ko if: !list().ReadOnly -->
+                <img class="inactiveIcon" role="button" data-bind="attr: { 
+                                                                     src: setAsActiveIcon, 
+                                                                     title: ogs.gsa.resources.Lists_SetAsActiveButtonTooltip, 
+                                                                     'aria-label': ogs.gsa.resources.Lists_SetAsActiveList.formatWith({ listName: list().Name })
+                                                                   }, 
+                                                                   click: $parent.setAsActive" />
+              <!-- /ko -->
+            </li>
+          <!-- /ko -->
+        <!-- /ko -->
+      <!-- /ko -->
+    </ul>
+  </div>
+</script>
+
+<script type="text/html" id="Lists.listNameInputs">
+  <div class="inputs">
+    <label data-bind="text: ogs.gsa.resources.Lists_EditListDialogListNameLabel"></label>
+    <label data-bind="validationNotification: listName"></label>
+    <input type="text" data-bind="
+      value: listName,
+      valueUpdate: 'afterkeydown',
+      executeOnEnter: save,
+      hasFocus: listName.hasFocus"/> 
+  </div>
+</script>
+
+<script type="text/html" id="Lists.editListFromCart">
+  <div class="existingList">
+    <span data-bind="html: ogs.gsa.resources.SaveListFromCart_ListSelectLabel"></span>
+    <label>
+      <select data-bind="options: editableLists,
+                           optionsText: function (item) {
+                            return item.list().Name;
+                           },
+                         value: selectedList">
+      </select>
+    </label>
+  </div>
+   <!-- ko if: selectedList() -->
+    <div class="newList" data-bind="css: { active: selectedList().createNewList}">
+      <!-- ko template: { name: 'Lists.listNameInputs' } -->
+      <!-- /ko -->
+    </div>
+  <!-- /ko -->
+</script>
+<script type="text/html" id="ReserveTimeSlotViewModel.view">
+  <section class="timeSlot">
+
+    <!-- ko if:  signInRequired() -->
+      <a href="#/reserve-timeslot" data-bind="click: signInUser, text : signInText">
+      </a>
+    <!-- /ko -->
+
+    <!-- ko ifnot:  signInRequired() -->
+      <!-- ko ifnot: currentReservedTimeslot() -->
+        <a href="#/reserve-timeslot" class="reserveTimeSlot" data-bind="visible: checkoutModel.isAuthenticated() && !hasReservedATimeslot(), click: redirectToReserveTimeSlot, text: ogs.gsa.resources.MiniCart_ReserveTimeslotButton">
+        </a>
+      <!-- /ko -->
+
+      <!-- ko if: currentReservedTimeslot() -->
+        <p>
+          <strong data-bind="text: ogs.gsa.resources.MiniCart_CurrentReservedTimeslot"></strong>
+        </p>
+        <p>
+          <strong data-bind="text: reservedSlotDateText"></strong>
+          <span data-bind="isoDate: currentReservedTimeslot().StartTime, format: ogs.gsa.resources.Format_LongFormalDate"></span>
+        </p>
+        <p>
+          <strong data-bind="text: reservedSlotTimeText"></strong>
+          <span data-bind="isoDate: currentReservedTimeslot().StartTime, format: ogs.gsa.resources.Format_ShortTime"></span>&nbsp;-&nbsp;<span data-bind="isoDate: currentReservedTimeslot().EndTime, format: ogs.gsa.resources.Format_ShortTime"></span>
+        </p>
+
+        <!-- ko if: deliveryAddress() && displayDeliveryAddress() -->
+          <p>
+            <strong data-bind="text: ogs.gsa.resources.MiniCart_CurrentDeliveryAddress"></strong>
+          </p>
+          <!-- ko template: {name : 'Address', data: deliveryAddress() } --><!-- /ko -->
+        <!-- /ko -->
+
+        <a id="changeTimeslot" href="#/reserve-timeslot" data-bind="click: redirectToReserveTimeSlot, text: ogs.gsa.resources.ReserveTimeSlot_ChangeLink"></a>
+      <!-- /ko -->
+    <!-- /ko -->
+  </section>
+</script>
+</head>
+<body>
+  
+<!-- <CommonScripts.cshtml> -->
+  <script src="https://ctsecure.newworld.co.nz/storefront/Content/scripts/thirdparty.min.js?v=34cgxZ5Bb5cPPZdFcz77BeUu9pshW7dS0qo5rB3CahA1"></script>
+
+  <script src="https://ctsecure.newworld.co.nz/storefront/Content/scripts/mwg.min.js?v=crYTPYgX5AwhQVuaiZONco008yoAX2V70B9Pclzzqhw1"></script>
+
+
+  <script src="https://shop.newworld.co.nz/api/advertising/v5/Ad/Content/adsgpt.min.js?mwg_v=5.13.3.23" type="text/javascript"></script>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'mwgAnalyticsDataLayer', 'GTM-WJ7MJB');</script>
+  <script src="https://ctsecure.newworld.co.nz/storefront/Content/scripts/ogs.min.js?v=PT_yDBRVZpstNn4Dhil1nWykY3NuU_xCB7lBwOZpTyw1"></script>
+
+  
+  <script type="text/javascript">
+
+    window.ogs.gsa.about = {
+      version: '5.13.3.23',
+      server: 'SMFSVIIS02'
+    };
+
+  </script>
+<!-- </CommonScripts.cshtml> -->
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-W84CCW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>  (function (w, d, s, l, i) {
+  w[l] = w[l] || []; w[l].push({ 'gtm.start':
+      new Date().getTime(), event: 'gtm.js'
+  }); var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+    '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'mwgAnalyticsDataLayer', 'GTM-W84CCW');</script>
+  <div id="container">
+    <header>
+  <div class="container">
+    <nav id="brandBar">
+      <a id="logo" class="logoGeneral" title="Home" target="_blank" data-bind="text: ogs.config.StoreAddress.FirstName, attr: { href: window.ogs.config.Links.StoreWebsite }"></a>
+      
+      <span id="ChangeStoreControl" data-bind="if: ogs.config.Settings.DisplayChangeStore">
+        <span>
+          <span data-bind="text: ogs.gsa.resources.ChangeStore_LabelText"></span>
+          <span>New World Thorndon</span>
+        </span>
+        <span id="changeStoreLink">
+          <a data-bind="
+            click: showChangeStoreWarningDialog,
+            title: ogs.gsa.resources.ChangeStore_ButtonText,
+            text: ogs.gsa.resources.ChangeStore_ButtonText">
+          </a>
+        </span>
+      </span>
+
+      <div id="timer" data-bind="template: &apos;CountdownTimerViewModel.view&apos;">
+      </div>
+      <div id="getStartedTutorial" class="headerInfo" data-bind="visible: ogs.config.Settings.EnableTutorialHeaderLayout &amp;&amp; !isAuthenticated()">
+        <label data-bind="text: ogs.gsa.resources.HeaderMenu_GetStartedText"></label>
+      </div>
+      <div class="headerInfo" id="welcomeMessage" data-bind="visible: shouldShowWelcomeMessage">
+        <label data-bind="text: shortWelcomeMessage"></label>
+      </div>
+    </nav>
+  </div>
+  <div id="stickyBar" data-bind="stickyBar: {containerSelector: &apos;#viewEngine-container&apos;,
+                                             isTouchEnabled: ogs.config.browser.isTouchEnabled,
+                                             triggers: [&apos;ProductListingViewModel.productsLoaded&apos;,
+                                                        &apos;ProductListingViewModel.viewTypeChanged&apos;,
+                                                        &apos;ViewEngine.viewChanged&apos;
+                                                       ] 
+                                              },
+                                  stopDescendantBindings: true">
+    <nav id="controls">
+      <div class="container">
+        <div id="categoryMenu" class="dropdown" data-bind="smoothHoverBool: isActive, 
+                         isTouchEnabled: ogs.config.browser.isTouchEnabled,
+                         css: { active: active }">
+          <button data-bind="
+              html: ogs.gsa.resources.Product_AllCategoriesDropDownText,
+              title : ogs.gsa.resources.Product_AllCategoriesDropDownTooltip,
+              click: isActive">
+          </button>
+          <span class="ieAfter"></span>
+            <!-- ko template: { name: 'CategoryViewModel.list' } -->
+            <!-- /ko -->
+        </div>
+
+        <div id="circularsMenu" class="dropdown" data-bind="smoothHoverBool: active,
+                         isTouchEnabled: ogs.config.browser.isTouchEnabled,
+                         css: { active: active }">
+          <button data-bind="html: ogs.gsa.resources.Circular_MenuText, click: active"></button>
+          <span class="ieAfter"></span>
+          <!-- ko template: { name: 'CircularMenuViewModel.list' } -->
+          <!-- /ko -->
+        </div>
+
+        <div id="searchBar" role="search" data-bind="css: {searchBarWhenListAndCirculars: showCircularsAndListMenu(), searchBarWhenListOrCirculars: showCircularsOrListMenu()}">
+          <div class="ui-widget">
+            <input type="text" autocomplete="off" data-bind="
+                value: searchBox,
+                placeholder: ogs.gsa.resources.Product_SearchBarText,
+                valueUpdate: &apos;afterkeydown&apos;,
+                jqAutoComplete: {
+                  getSuggestions: getSearchSuggestions
+                },
+                executeOnEnter: textSearch,
+                title : ogs.gsa.resources.Product_SearchBarTextTooltip">
+          </div>
+          <button data-bind="
+            click: textSearch,
+            html: ogs.gsa.resources.Product_SearchBarGoButtonText,
+            title: ogs.gsa.resources.Product_SearchBarGoButtonTooltip">
+            </button>
+        </div>
+
+          <div id="cartMenu" aria-live="assertive" class="dropdown" data-bind="smoothHover: menuManager.toggleMenu, css: { active: menuManager.isMenuOpen }">
+            <button data-bind="click: viewCart, title: ogs.gsa.resources.MiniCart_CartDropDownTooltip">
+              <div>
+                <span class="title" data-bind="html: window.ogs.gsa.resources.MiniCart_TitleDropDownText.formatWith({ cartQuantity: cartQuantity(), cartTotal: cartTotal() })">                </span>
+                <span class="sub-title" data-bind="
+                  html: window.ogs.gsa.resources.MiniCart_SubTitleDropDownText
+                          .formatWith({ cartQuantity: cartQuantity(), cartTotal: cartTotal() })">
+                </span>
+                <div class="accessibilityAlert" role="alert" data-bind="html: ogs.gsa.resources.Accessibility_CartUpdatedAlert.formatWith({total: cartTotal()})"></div>
+              </div>
+            </button>
+            <span class="ieAfter"></span>
+            <!-- ko template: { name: 'MiniCartViewModel.view' } -->
+            <!-- /ko -->
+          </div>
+
+        <div id="timeSlotControl" class="dropdown" data-bind="visible: ogs.config.Settings.EnableTutorialHeaderLayout, css: {selectedSlotVisible: hasReservedATimeslot()}">
+          <button class="reserveTimeslot tutorialStep" data-bind="visible: !hasReservedATimeslot(), click: navigateToReserveTimeSlot, title:window.ogs.gsa.resources.HeaderMenu_ReserveTimeslotButtonTooltip">
+            <span class="actionIndex" data-bind="text: window.ogs.gsa.resources.HeaderMenu_ReserveTimeslotActionIndex"></span> 
+            <span class="actionSubject" data-bind="text: window.ogs.gsa.resources.HeaderMenu_ReserveTimeslotActionSubject"></span>
+            <span class="actionName" data-bind="text: window.ogs.gsa.resources.HeaderMenu_ReserveTimeslotActionName"></span>
+          </button>
+          <button class="tutorialStep" data-bind="visible: hasReservedATimeslot(),  click: redirectToReserveTimeSlot, css: {reservedPickupTimeslot: isPickupTimeslot(), reservedDeliveryTimeslot: isDeliveryTimeslot()} ">
+            <span data-bind="text: selectedDay"></span>
+            <span data-bind="text: selectedDate"></span>
+            <span class="selectedTime" data-bind="text: selectedTime"></span>
+          </button>
+        </div>
+
+        <div id="authenticationControls" data-bind="visible: !user().isAuthenticated(), css: { dropdown: ogs.config.Settings.EnableTutorialHeaderLayout }">
+          <!-- ko if: !ogs.config.Settings.EnableTutorialHeaderLayout -->
+            <button class="auth" data-bind="
+              click: promptSignIn,
+              title: ogs.gsa.resources.MyAccountMenu_SignInButtonTooltip,
+              text: ogs.gsa.resources.MyAccountMenu_SignInButtonText">
+            </button>
+            <span class="auth" data-bind="text: ogs.gsa.resources.MyAccountMenu_OrText"></span>
+            <button class="auth" title="Register" data-bind="
+              click: promptRegistration,
+              title: ogs.gsa.resources.MyAccountMenu_RegisterButtonTooltip,
+              text: ogs.gsa.resources.MyAccountMenu_RegisterButtonText">
+            </button>
+          <!-- /ko -->
+          <!-- ko if: ogs.config.Settings.EnableTutorialHeaderLayout -->
+            <button class="tutorialStep" data-bind="click: promptSignIn, title: ogs.gsa.resources.MyAccountMenu_SignInButtonTooltip">
+              <span class="actionIndex" data-bind="text: ogs.gsa.resources.HeaderMenu_CreateAccountActionIndex"></span> 
+              <span class="actionSubject" data-bind="text: ogs.gsa.resources.HeaderMenu_CreateAccountActionSubject"></span>
+              <span class="actionName" data-bind="text: ogs.gsa.resources.HeaderMenu_CreateAccountActionName"></span>
+            </button>
+          <!-- /ko -->
+        </div>
+
+          <div id="listMenu" class="dropdown" data-bind="smoothHoverBool: isActive,
+                          isTouchEnabled: ogs.config.browser.isTouchEnabled,
+                          css: { active: isActive },
+                          visible: isVisible">
+            <button data-bind="title : ogs.gsa.resources.Product_MyListsMenuTooltip, click: isActive">
+              <span data-bind="html : ogs.gsa.resources.Product_MyListsMenuText"></span>
+            </button>
+            <!-- ko template: { name: 'ShoppingListsViews.menu' } -->
+            <!-- /ko -->
+          </div>
+
+        <div id="accountMenu" class="dropdown" data-bind="
+            smoothHover: menuManager.toggleMenu,
+            isTouchEnabled: ogs.config.browser.isTouchEnabled,
+            css: {
+              active: menuManager.isMenuOpen
+            },
+            visible: user().isAuthenticated">
+          <button data-bind="title : ogs.gsa.resources.Product_MyAccountMenuTooltip, click: menuManager.isMenuOpen">
+            <span data-bind="html : ogs.gsa.resources.Product_MyAccountMenuText"></span>
+          </button>
+          <span class="ieAfter"></span>
+          <ul class="menu" data-bind="slideVisibleVertical: menuManager.isMenuOpen, slidingSpeed: window.ogs.config.Settings.MenuAnimationSlidingSpeed">
+            <li>
+              <a href="" data-bind="
+                click: promptEditAccount,
+                text: ogs.gsa.resources.MyAccountMenu_EditAccountText,
+                title: ogs.gsa.resources.MyAccountMenu_EditAccountTooltip"></a>
+            </li>
+            <li>
+              <a href="" data-bind="
+                click: navigateToOrderManagement,
+                text: ogs.gsa.resources.MyAccountMenu_OrderHistoryText,
+                title: ogs.gsa.resources.MyAccountMenu_OrderHistoryTooltip">
+              </a>
+            </li>
+           <!--  <li>
+              <a href="" data-bind="
+                title: ogs.gsa.resources.MyAccountMenu_HelpTooltip,
+                text: ogs.gsa.resources.MyAccountMenu_HelpText" >
+              </a>
+            </li> -->
+            <li>
+              <a href="" data-bind="
+                title : ogs.gsa.resources.MyAccountMenu_SignOutTooltip,
+                click: signOutUser,
+                text : ogs.gsa.resources.MyAccountMenu_SignOutText">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="lowerSticky">
+      <nav>
+        <div class="container">
+          <ul id="breadcrumbs" data-bind="visible: breadcrumbs().length &gt; 0, template: { name : &apos;BreadcrumbsViewModel.crumbsList&apos; }"></ul>
+        </div>
+      </nav>
+    </div>
+    <div id="configEnvironmentName">
+      <!-- ko if: ogs.config.EnvironmentName -->
+        <span data-bind="text: ogs.config.EnvironmentName"></span>
+      <!-- /ko -->
+    </div>
+    <div class="container">
+      <div id="pricingNotification">
+      <!-- ko if: ogs.gsa.storeSettings.ShowPricingNotificationMessage -->
+        <span data-bind="text : ogs.gsa.resources.PricingPolicyNotificationMessage"></span>
+      <!-- /ko -->
+      </div>
+    </div>
+  </div>
+</header>
+    <div id="viewEngine-container" data-bind="loadingScreen: loading" class="container">
+      <!-- ko with: activeView -->
+      <div id="content" aria-live="assertive" data-bind="viewEngine: {data: $data, scrollTopOnChange: true}, attr: {&apos;class&apos;: $data.className }">
+      </div>
+      <!-- /ko -->
+      <div class="clear">
+      </div>
+    </div>
+    <div id="messageDialog" class="dialog" data-bind="
+      dialog: {
+        title: title,
+        template: { name: &apos;DialogViewModel.dialog&apos; },
+        isActive: isOpen,
+        isModal: isModal,
+        hideCloseIcon: hideCloseIcon,
+        closeCallback: dialogClosed,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      }">
+    </div>
+    <div id="editListDialog" class="dialog modal" data-bind="
+      dialog: {
+        title: dialogTitle,
+        template: { name: &apos;Lists.editListDialog&apos; },
+        isActive: isDialogOpen,
+        isModal: true,
+        closeOnBlur: true,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      }">
+    </div>
+    <div id="proceedToCheckoutDialog" class="dialog modal" data-bind="
+      dialog: {
+        title: dialogTitle,
+        template: { name: &apos;GuestCheckoutViewModel.proceedToCheckoutDialog&apos;},
+        isActive: isDialogOpen,
+        isModal: true,
+        closeOnBlur: true,
+        closeCallback: closeGuestCheckoutDialog,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      },
+      css: {guestRegisterPage: activePage() === pages.guestCheckoutForm}">
+    </div>
+    <div id="addCustomItemDialog" class="dialog modal" data-bind="
+      dialog: {
+        title:  dialogTitle,
+        template: { name: &apos;UserDefinedItemManagerViewModel.addCustomItemDialog&apos;},
+        isActive: dialogActive,
+        isModal: true,
+        closeOnBlur: true,
+        closeButtonTooltip: window.ogs.gsa.resources.DialogWindow_CloseButtonTooltipText
+      }">
+    </div>
+  </div>
+  <script type="text/javascript">
+  (function () {
+      var sa = document.createElement('script'); sa.type = 'text/javascript'; sa.async = true; sa.src = ('https:' == document.location.protocol ? 'https://cdn' : 'http://cdn') + '.ywxi.net/js/1.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sa, s); 
+    })();
+</script>
+  
+
+<footer>
+  <div class="container">
+    <ul>
+      <li>
+        <a href="/store/6EE070045#/content/privacy-policy">Privacy Policy</a>
+      </li>
+      <li>
+        <a href="/store/6EE070045#/content/terms-of-use">Terms of Use</a>
+      </li>
+      <li>
+        <a href="/store/6EE070045#/content/help">Help</a>
+      </li>
+      <li>
+        <a href="/store/6EE070045#/contact-us">Contact Us</a>
+      </li>
+      <li>
+        <span>Copyright 1999-2016 MyWebGrocer, Inc. All Rights Reserved</span>
+      </li>
+    </ul>
+  </div>
+</footer>
+  <div id="pageLoading">
+    <span></span>
+    <div>
+      <strong>Content Loading...</strong>
+    </div>
+  </div>
+  <script src="https://ctsecure.newworld.co.nz/storefront/Content/scripts/product-browsing.min.js?v=pJNmsJQJr_fSIfyYUI8cXdSN2NK5avK_xoRVVE2nXuw1"></script>
+
+  <script type="text/javascript">
+      $(function(){
+        var configuration = {"Token":"97eb1c18-7f66-e611-8664-e4115be92184","EntryUrl":"https://shop.newworld.co.nz/api/v1/shop/user/0847570f-ceea-46c2-bd5d-b93c753fb65b/store/6EE070045","PseudoChainId":"A063326","PseudoStoreId":"6EE070045","ChainId":326,"CurrentUser":{"UserId":"0847570f-ceea-46c2-bd5d-b93c753fb65b","UserName":"Anonymous","Email":"","IsAnonymous":true,"IsGuest":false,"IsAuthenticated":false,"FrequentShopperNumber":"","Addresses":[]},"ProductImageFallbackLarge":"https://ctsecure.newworld.co.nz/app/gsa/content/style/c/c/A063326/gpi_dj_20.gif","ProductImageFallbackSmall":"https://ctsecure.newworld.co.nz/app/gsa/content/style/c/c/A063326/gpi_sj_20.gif","Links":{"StoreWebsite":"http://www.newworld.co.nz","AddBillingAddressUrl":"/store/6EE070045/User/Addresses/Billing/Add","AddDeliveryAddressUrl":"/store/6EE070045/User/Addresses/Delivery/Add","EditAddressTemplate":"/store/6EE070045/User/Addresses/{addressId}/Edit","SignOutUrl":"/store/6EE070045/User/SignOut","SignInUrl":"/store/6EE070045/User/SignIn","RegistrationUrl":"/store/6EE070045/User/Register","EditAccountUrl":"/store/6EE070045/User/Account","EditProfileUrl":"/store/6EE070045/User/EditIncompleteProfile","NotFoundUrl":"/store/6EE070045/404.html","CheckoutUrl":"/store/6EE070045/checkout","ProductBrowsingUrl":"/store/6EE070045","CustomContentUrlTemplate":"/store/6EE070045/customcontent/{contentKey}","PaymentSuccessCallbackUri":"https://shop.newworld.co.nz/store/6EE070045/checkout/ProcessPayment?authorized=True","PaymentCancelCallbackUri":"https://shop.newworld.co.nz/store/6EE070045/checkout/ProcessPayment?authorized=False","GuestRegistration":"/store/6EE070045/user/registerGuest","GuestSignOut":"/store/6EE070045/user/signOut/guest","SaveComments":"/store/6EE070045/customerpreference/comments","SaveSubstitutions":"/store/6EE070045/customerpreference/substitutions","CommentsSynced":"/store/6EE070045/customerpreference/comments/synced","SubstitutionsSynced":"/store/6EE070045/customerpreference/substitutions/synced","ClearCustomerSettings":"/store/6EE070045/customerpreference"},"Settings":{"CheckoutSkipReviewStep":true,"EnableDetailedTimeslotPicker":true,"ShowInitialFulfillmentSelectionScreen":true,"IsCategoryMenuExpandedOnLandingPage":true,"ShowSummaryInfoDialogOnCheckoutPaymentPage":false,"NumberOfDaysPerTimeslotCalendarPage":5,"ShowServiceFees":true,"ShowCustomCategoriesOnTopOfCategoriesList":false,"EnableTutorialHeaderLayout":false,"NumberOfCartItemsThatTriggerSlotReservationNotification":-1,"MenuAnimationSlidingSpeed":0},"StoreAddress":{"Id":0,"FirstName":"New World Thorndon","LastName":null,"Line1":"41 Murphy Street","Line2":"Thorndon","Line3":"","City":"Wellington","State":"Wellington","Zip":"6011","CountryCode":"NZL","Phone1":{"Number":"0800463996","IsMobile":false},"Phone2":null,"IsDefaultBilling":false,"IsDefaultShipping":false,"NeighborhoodId":null,"DeliveryPointId":null,"Validated":false},"AdsApplicationId":21,"StoreId":70045,"EnvironmentName":"","CustomerSettings":{"substitutions":{"Value":"False","HasBeenSynchronized":false}},"StoreLocalTime":"2016-08-20T14:37:56.6499982"};
+      
+      // set ad context properties
+      if (jQuery.fn.fetchAds) {
+        jQuery.fn.fetchAds.globalContext.applicationid = configuration.AdsApplicationId; 
+        jQuery.fn.fetchAds.globalContext.userGuid = configuration.CurrentUser.UserId;
+        jQuery.fn.fetchAds.globalContext.pseudochainid = configuration.PseudoChainId;
+        jQuery.fn.fetchAds.globalContext.email = configuration.CurrentUser.Email !== "" ? configuration.CurrentUser.Email : "none";
+        jQuery.fn.fetchAds.globalContext.pseudostoreid = configuration.PseudoStoreId;
+      } else {
+        $.log("Advertising failed: $.fetchAds not available");
+      }
+
+        window.ogs.gsa.productBrowsing.init(configuration);
+      });
+  </script>
+  <script type="text/javascript">
+    $.ajax("/browser/screen?width=" + screen.width + "&height=" + screen.height);
+  </script>
+</body>
