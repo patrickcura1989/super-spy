@@ -42,17 +42,6 @@ var inventory = {"countdown": {"eggs" : 725,
                                "orange_juice": 450}
                 };
 
-// this function returns a map containing spoof values
-function searchInventory(item) {
-  //search inventory
-  var countdown = inventory["countdown"][item];
-  var new_world = inventory["new_world"][item];
-  var pak_n_save = inventory["pak_n_save"][item];
-
-  // return map of results
-  return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
-}
-
 // scrapes values from the countdown website
 function getCountdownPrice(item) {
   url =
@@ -61,50 +50,70 @@ function getCountdownPrice(item) {
   '&SearchType=grocery&_mode=ajax&_ajaxsource=search-panel&_referrer=%2FShop%2FSearchProducts%3Fsearch%3D'
   +item+
   '&_showTrolley=false&_bannerViews=2987,3478,3501,3503,3511&_=1471659959708';
-
-  request(url, function(error, response, html){
-    var ret = response.body+"";
-    ret = ret.replace(/&gt;/g, '>');
-    ret = ret.replace(/&lt;/g, '<');
-    ret = ret.replace(/&quot;/g, '"');
-    ret = ret.replace(/&apos;/g, "'");
-    ret = ret.replace(/&amp;/g, '&');
-    if(!error){
-      var $ = cheerio.load(ret);
-      var title, release, rating;
-      var json = { price1 : "", price2 : ""};
-      var count = 0;
-      $('.price.din-medium').filter(function(){
-        if(count == 0){
-          var data = $(this);
-          var price = data.first().text().replace("ea","").replace("kg","").replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim().replace("$","").replace(".","");
-          console.log(parseInt(price));
-          return new Promise.resolve(parseInt(price))
-          //json.price1 = data.children().first().text();
-        }
-        count++;
-      })
-    }
+return new Promise(function(resolve, reject){
+    request(url, function(error, response, html){
+      var ret = response.body+"";
+      ret = ret.replace(/&gt;/g, '>');
+      ret = ret.replace(/&lt;/g, '<');
+      ret = ret.replace(/&quot;/g, '"');
+      ret = ret.replace(/&apos;/g, "'");
+      ret = ret.replace(/&amp;/g, '&');
+        if(!error){
+        var $ = cheerio.load(ret);
+        var title, release, rating;
+        var json = { price1 : "", price2 : ""};
+        var count = 0;
+        $('.price.din-medium').filter(function(){
+          if(count == 0){
+            var data = $(this);
+            var price = data.first().text().replace("ea","").replace("kg","").replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim().replace("$","").replace(".","");
+            resolve(parseInt(price));
+          }
+          count++;
+        })
+      }
+    });
   });
 }
 
-// promises!
-var paknsavePromise = 0; // should search website for pak n save prices
-var new_worldPromise = 0; // should search website for new world prices
+// Function scrapes off the pak n save website for information
+function getPakNSavePrice(item){
+   return Promise.resolve(inventory["pak_n_save"][item]);
+}
+
+// Function scrapes off the new world website for information
+function getNewWorldPrice(item){
+  return Promise.resolve(inventory["new_world"][item]);
+}
 
 // This function handles HTML GET requests
 app.get('/', function(req, res) {
-
-   var item = req.param('item');
-   //console.log(item);
-   //res.json(searchInventory(item));
-
-   Promise.all([getCountdownPrice(item), paknsavePromise, new_worldPromise]).then(function(values){
-       //manipulate values to match the output previously defined
-       console.log(values);
-   });
+  res.sendfile("index.html");
 });
+
+app.get('/search', function(req, res){
+     var item = req.param('item');
+     console.log(item);
+     Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
+       //values looks like [0,0, 0]
+       var prices = [{"price":values[0]},{"price":values[1]},{"price":values[2]}]
+       // Format dictionary
+       var shop_to_price = {"countdown":prices[0], "new_world":prices[1], "pak_n_save": prices[2]};
+       res.json(shop_to_price);
+     });
+})
 
 app.listen(3000);
 
-console.log("connect to port localhost:3000");
+console.log("Serving files on localhost:3000");
+console.log("example search: http://localhost:3000/search?item=eggs");
+
+// this function returns a map containing spoof values
+// function searchInventory(item) {
+//   //search inventory
+//   var countdown = Promise.resolve(inventory["countdown"][item]);
+//   var new_world = Promise.resolve(inventory["new_world"][item]);
+//   var pak_n_save = Promise.resolve(inventory["pak_n_save"][item]);
+//
+//   return Promise.all([countdown, new_world, pak_n_save]).t
+// }
