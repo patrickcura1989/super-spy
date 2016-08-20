@@ -1,17 +1,19 @@
-/* Move down content because we have a fixed navbar that is 50px tall */
 body {
 	padding-top: 200px
 }
-.title{
-	font-family: "Helvetica", Arial, sans-serif;
+h1.title{
+	font-family: "Helveica", Arial, sans-serif;
 	text-align: center;
+	color: white;
 }
 
 .col-centered{
     float: none;
     margin: 0 auto;
+
 }
 
-.centeredText{
+p.centeredText{
 	text-align: center;
+	color: white;
 }
