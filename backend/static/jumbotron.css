@@ -4,7 +4,7 @@ html{
 }
 
 body{
-	padding-top: 100px;
+	/*padding-top: 100px;*/
 }
 
 section.section1{
@@ -99,5 +99,16 @@ p{
 p.centeredText{
 	text-align: center;
 	color: white;
+}
+
+#logo{
+	padding-left: 20px;
+	padding-top: 20px;
+	width:250px;
+	height:50px;
+}
+
+#pad{
+	padding-top: 100px;
 }
 
