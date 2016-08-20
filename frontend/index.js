@@ -1,8 +1,8 @@
 $(function(){
 	$("#searchButton").on("click", function(){
-		alert("Banana");
+		//alert("Banana");
 		//(".title").hide();
-		var text = getElementByID("text").value;
+		var text = $("#text").val();
 		alert(text);
 	})
 
