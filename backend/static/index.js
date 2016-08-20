@@ -1,9 +1,10 @@
 $(function(){
 	$("#searchButton").on("click", function(data){
-		//alert("Banana");
-		//(".title").hide();
 		var text = $("#text").val();
-
+		$("#text").hide();
+		$(".title").hide();
+		$(".centeredText").hide();
+		$("#searchButton").hide();
 		var url = "http://localhost:3000/search?item=" + text;
 		$.getJSON(url).then(function (data) {
 			// body...
@@ -23,6 +24,7 @@ $(function(){
 
 			var results = "CountDown Price!:  " + cdPrice + "\n" + "New World Price!: " + nwPrice + "\n" + "Pak n Save Price!: "  + pkPrice; //so on and so forth
 			alert(results);
+
 		});
 	});
 
