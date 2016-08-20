@@ -7,7 +7,7 @@ $(function(){
 	$("#searchButton").on("click", function(data){
 		var text = $("#text").val();
 		$(".section1").hide();
-		$(".section2").show();
+		
 		var url = "http://localhost:3000/search?item=" + text;
 		$.getJSON(url).then(function (data) {
 			// body...
@@ -62,7 +62,7 @@ $(function(){
 
 			
 			//alert(best[0] + "!: " + best[1] + "\n" + second[0] + "!: " + second[1] + "\n" + third[0] + "!: " + third[1]);
-
+			$(".section2").show();
 		});
 	});
 
