@@ -3,6 +3,7 @@ var fs = require('fs');
 var request = require('request');
 var request = require('request-promise-native');
 var cheerio = require('cheerio');
+var htmlspecialchars = require('htmlspecialchars');
 var app = express();
 
 app.use(express.static("public"));
@@ -59,28 +60,30 @@ var item = req.param('item');
 console.log(item);
 res.json(searchInventory(item));
 
-url = 'https://shop.newworld.co.nz/store/6EE070045#/search/egg/1';
+url = 'http://shop.countdown.co.nz/Shop/Search?__RequestVerificationToken=HAczcFWEE1H8iljsKxgyHq357IOAO41Kz%2BWZfmDBiYL%2FyVH9RVH2F3zYV%2FOj4TcZrTa9sd5j%2F2xPMJUGKzB%2F6JZZ2hOClR9a9Ya8d79RdTLrTeX%2FPbuMYSldIbSQjhK98dgZYhYCMwgnSu6S31yvARxHalCog2v%2Fo5DynH3MNr8%3D&search=milk&SearchType=grocery&_mode=ajax&_ajaxsource=search-panel&_referrer=%2FShop%2FSearchProducts%3Fsearch%3Deggs&_showTrolley=false&_bannerViews=2987,3478,3501,3503,3511&_=1471659959708';
 
 request(url, function(error, response, html){
+  var ret = response.body+"";
+  ret = ret.replace(/&gt;/g, '>');
+    ret = ret.replace(/&lt;/g, '<');
+    ret = ret.replace(/&quot;/g, '"');
+    ret = ret.replace(/&apos;/g, "'");
+    ret = ret.replace(/&amp;/g, '&');
     if(!error){
-        var $ = cheerio.load(html);
+        var $ = cheerio.load(ret);
 
     var title, release, rating;
     var json = { price1 : "", price2 : ""};
 
-    console.log($('html').html());
-
-    var stream = fs.createWriteStream("my_file.txt");
-stream.once('open', function(fd) {
-  stream.write($('html').html()+"");
-  stream.end();
-});
-
+var count = 0;
     $('.price.din-medium').filter(function(){
+      if(count == 0){
         var data = $(this);
-        console.log(data.text());
+        console.log(data.first().text());
 
-        json.price1 = data.text();
+        //json.price1 = data.children().first().text();
+      }
+      count++;
     })
 
 
