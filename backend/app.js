@@ -96,18 +96,20 @@ function getNewWorldPrice(item){
            url: 'https://shop.newworld.co.nz/api/v1/products/store/6EE070045/search?skip=0&take=15&q='+item,
            headers: headers
        };
-
        function callback(error, response, body) {
            if (!error && response.statusCode == 200) {
              var obj = JSON.parse(body);
-             var price = obj["Items"][0]["CurrentPrice"].trim().replace("$","").replace(".","");
+             try{
+               var price = obj["Items"][0]["CurrentPrice"].trim().replace("$","").replace(".","");
+             } catch(e) {
+               resolve(0);
+             }
              var integerPrice = parseInt(price);
              resolve(integerPrice);
            }
        }
-       request(options, callback);
+      request(options, callback);
   });
-  //return Promise.resolve(inventory["new_world"][item]);
 }
 
 // This function handles HTML GET requests
@@ -119,11 +121,16 @@ app.get('/search', function(req, res){
      var item = req.param('item');
      console.log(item);
      Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
-       //values looks like [0,0, 0]
        var prices = [{"price":values[0]},{"price":values[1]},{"price":values[0]*0.90}]
+       //if values 1 is 0, it caught an error, turn everything to 0
+       if(values[1] == 0){
+          prices = [{"price": null},{"price": null}, {"price": null}]
+       }
        // Format dictionary
        var shop_to_price = {"countdown":prices[0], "new_world":prices[1], "pak_n_save": prices[2]};
        res.json(shop_to_price);
+     }).catch(function(e){
+       console.log("error caught");
      });
 });
 
