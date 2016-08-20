@@ -2,9 +2,16 @@
 body {
 	padding-top: 200px
 }
-.col-md-2{
-	width: 16.6%;
+.title{
+	font-family: "Helvetica", Arial, sans-serif;
+	text-align: center;
 }
-.col-md-8{
-	width: 66.8%
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+.centeredText{
+	text-align: center;
 }
