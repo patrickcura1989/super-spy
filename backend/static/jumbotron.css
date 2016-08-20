@@ -4,11 +4,48 @@ html{
 }
 
 body{
-	padding-top: 200px
+	padding-top: 100px;
 }
 
-h1.title{
+section.section1{
+	padding-top:50px;
+}
+
+#section2{
+	display: none;
+}
+
+#colLeft{
+	background-color: Transparent;
+    background-repeat:no-repeat;
+    border: 2px solid white;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+#colMiddle{
+	background-color: green;
+}
+
+#colRight{
+	background-color: Transparent;
+    background-repeat:no-repeat;
+    border: 2px solid white;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
+h1.titleFirstPage{
 	font-family: "Helveica", Arial, sans-serif;
+	text-align: center;
+	color: white;
+}
+
+h1.titleSecondPage{
+	font-family: "Helveica", Arial, sans-serif;
+	font-size: 40px;
 	text-align: center;
 	color: white;
 }

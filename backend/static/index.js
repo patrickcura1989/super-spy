@@ -1,10 +1,8 @@
 $(function(){
 	$("#searchButton").on("click", function(data){
 		var text = $("#text").val();
-		$("#text").hide();
-		$(".title").hide();
-		$(".centeredText").hide();
-		$("#searchButton").hide();
+		$(".section1").hide();
+		$(".section2").show();
 		var url = "http://localhost:3000/search?item=" + text;
 		$.getJSON(url).then(function (data) {
 			// body...
