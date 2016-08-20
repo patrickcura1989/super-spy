@@ -79,7 +79,7 @@ var count = 0;
     $('.price.din-medium').filter(function(){
       if(count == 0){
         var data = $(this);
-        console.log(data.first().text());
+        console.log("+++"+data.first().text().replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim()+"+++");
 
         //json.price1 = data.children().first().text();
       }
