@@ -47,12 +47,43 @@ function searchInventory(item) {
   var pak_n_save = inventory["pak_n_save"][item];
 
   // return map of results
+<<<<<<< HEAD
   return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
 }
 console.log("connect to port localhost:3000");
 app.get("/", (req, res) => {
   var item = req.param('item');
  res.send(searchInventory(item));
+=======
+  return {"countdown": {price: countdown}, "new_world": {price: new_world}, "pak_n_save": {price: pak_n_save}};
+}
+
+
+//function requestTemperature() {
+//  var url = "https://api.forecast.io/forecast/" + forecastIOKey + "/-41.2865,174.7762";
+
+//  return request({url: url, json: true}).then(data => {
+//    var temperature = data.currently.temperature;
+//    var celsius = (temperature - 32) * 5 / 9;
+
+//    return Math.round(celsius * 10) / 10;
+//  });
+//};
+
+//function determineFood(temperature) {
+//  if (temperature > 21) {
+//    return "ice cream";
+//  }
+//  else {
+//    return "fried noodles";
+//  }
+//}
+
+app.get('/', (req, res) => {
+  var item = req.param('item');
+  console.log(item);
+  res.json(searchInventory(item));
+>>>>>>> origin/master
 });
 
 app.listen(3000);
