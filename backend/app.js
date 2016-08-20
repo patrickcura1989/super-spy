@@ -89,8 +89,8 @@ function getCountdownPrice(item) {
 }
 
 // promises!
-var paknsavePromise = new Promise.resolve(inventory["pak_n_save"][item]);
-var new_worldPromise = 0;
+var paknsavePromise = 0; // should search website for pak n save prices
+var new_worldPromise = 0; // should search website for new world prices
 
 // This function handles HTML GET requests
 app.get('/', function(req, res) {
