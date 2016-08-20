@@ -65,4 +65,4 @@ app.get("/", (req, res) => {
 app.listen(3000);
 
 console.log("Serving files on localhost:3000");
-console.log("example search: http://localhost:3000/?item=eggs")
+console.log("example search: http://localhost:3000/search?item=eggs")
