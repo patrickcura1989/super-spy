@@ -1,4 +1,9 @@
 $(function(){
+	$("#returnButton").on("click", function(data){
+		$(".section1").show();
+		$(".section2").hide();
+	});
+
 	$("#searchButton").on("click", function(data){
 		var text = $("#text").val();
 		$(".section1").hide();
@@ -62,3 +67,10 @@ $(function(){
 	});
 
 });
+
+//$(function() {
+//	$("#returnButton").on("click", function(data)){
+//		$(".section1").show();
+//		$(".section2").hide();
+//	});
+//});

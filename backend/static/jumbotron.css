@@ -53,10 +53,16 @@ h1.titleSecondPage{
 	text-align: center;
 	color: white;
 }
-
+h2{
+	text-align: center;
+	font-family: "Helveica", Arial, sans-serif;
+	font-size: 18px;
+	color: white;	
+}
 h3{
 	text-align: center;
 	font-family: "Helveica", Arial, sans-serif;
+	font-size: 45px;
 	color: white;
 }
 
@@ -78,6 +84,16 @@ p{
     cursor:pointer;
     overflow: hidden;
     outline:none;
+}
+
+#returnButton{
+	background-color: Transparent;
+    background-repeat:no-repeat;
+    border: 2px solid white;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}	
 }
 
 p.centeredText{
