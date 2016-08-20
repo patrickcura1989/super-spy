@@ -47,32 +47,12 @@ function searchInventory(item) {
   var pak_n_save = inventory["pak_n_save"][item];
 
   // return map of results
-  return {"countdown": {item: countdown}, "new_world": {item: new_world}, "pak_n_save": {item: pak_n_save}};
+  return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
 }
-
-
-//function requestTemperature() {
-//  var url = "https://api.forecast.io/forecast/" + forecastIOKey + "/-41.2865,174.7762";
-
-//  return request({url: url, json: true}).then(data => {
-//    var temperature = data.currently.temperature;
-//    var celsius = (temperature - 32) * 5 / 9;
-
-//    return Math.round(celsius * 10) / 10;
-//  });
-//};
-
-//function determineFood(temperature) {
-//  if (temperature > 21) {
-//    return "ice cream";
-//  }
-//  else {
-//    return "fried noodles";
-//  }
-//}
-
+console.log("connect to port localhost:3000");
 app.get("/", (req, res) => {
- res.send("hello");
+  var item = req.param('item');
+ res.send(searchInventory(item));
 });
 
 app.listen(3000);
