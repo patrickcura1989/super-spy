@@ -1,6 +1,12 @@
-body {
+html{
+	background-image: url("HomeBackground.png");
+	background-size: 100%;
+}
+
+body{
 	padding-top: 200px
 }
+
 h1.title{
 	font-family: "Helveica", Arial, sans-serif;
 	text-align: center;
@@ -11,6 +17,15 @@ h1.title{
     float: none;
     margin: 0 auto;
 
+}
+
+#searchButton{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: 2px solid white;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
 }
 
 p.centeredText{

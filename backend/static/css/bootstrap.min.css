@@ -3,7 +3,7 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+/*! normalize.css v3.0.3 | MIT License | github.com/ne-das/normalize.css */
 
 html {
     font-family: sans-serif;
@@ -1084,8 +1084,6 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #333;
-    background-color: #fff
 }
 button,
 input,
@@ -5054,7 +5052,6 @@ a.badge:hover {
 
 .jumbotron .h1,
 .jumbotron h1 {
-    color: inherit
 }
 .jumbotron p {
     margin-bottom: 15px;
@@ -5062,7 +5059,6 @@ a.badge:hover {
     font-weight: 200
 }
 .jumbotron>hr {
-    border-top-color: #d5d5d5
 }
 .container .jumbotron,
 .container-fluid .jumbotron {
@@ -5781,14 +5777,14 @@ button.list-group-item-danger.active:hover {
     border-color: #ddd
 }
 .panel-default>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #ddd
+    
 }
 .panel-default>.panel-heading .badge {
     color: #f5f5f5;
     background-color: #333
 }
 .panel-default>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #ddd
+    
 }
 .panel-primary {
     border-color: #337ab7
@@ -5799,14 +5795,14 @@ button.list-group-item-danger.active:hover {
     border-color: #337ab7
 }
 .panel-primary>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #337ab7
+    
 }
 .panel-primary>.panel-heading .badge {
     color: #337ab7;
     background-color: #fff
 }
 .panel-primary>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #337ab7
+    
 }
 .panel-success {
     border-color: #d6e9c6
@@ -5817,14 +5813,14 @@ button.list-group-item-danger.active:hover {
     border-color: #d6e9c6
 }
 .panel-success>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #d6e9c6
+    
 }
 .panel-success>.panel-heading .badge {
     color: #dff0d8;
     background-color: #3c763d
 }
 .panel-success>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #d6e9c6
+    
 }
 .panel-info {
     border-color: #bce8f1
@@ -5835,14 +5831,14 @@ button.list-group-item-danger.active:hover {
     border-color: #bce8f1
 }
 .panel-info>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #bce8f1
+    
 }
 .panel-info>.panel-heading .badge {
     color: #d9edf7;
     background-color: #31708f
 }
 .panel-info>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #bce8f1
+    
 }
 .panel-warning {
     border-color: #faebcc
@@ -5853,14 +5849,14 @@ button.list-group-item-danger.active:hover {
     border-color: #faebcc
 }
 .panel-warning>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #faebcc
+    
 }
 .panel-warning>.panel-heading .badge {
     color: #fcf8e3;
     background-color: #8a6d3b
 }
 .panel-warning>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #faebcc
+    
 }
 .panel-danger {
     border-color: #ebccd1
@@ -5871,14 +5867,14 @@ button.list-group-item-danger.active:hover {
     border-color: #ebccd1
 }
 .panel-danger>.panel-heading+.panel-collapse>.panel-body {
-    border-top-color: #ebccd1
+    
 }
 .panel-danger>.panel-heading .badge {
     color: #f2dede;
     background-color: #a94442
 }
 .panel-danger>.panel-footer+.panel-collapse>.panel-body {
-    border-bottom-color: #ebccd1
+    
 }
 .embed-responsive {
     position: relative;
