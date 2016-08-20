@@ -120,7 +120,7 @@ app.get('/search', function(req, res){
      console.log(item);
      Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
        //values looks like [0,0, 0]
-       var prices = [{"price":values[0]},{"price":values[1]},{"price":values[2]}]
+       var prices = [{"price":values[0]},{"price":values[1]},{"price":values[0]*0.90}]
        // Format dictionary
        var shop_to_price = {"countdown":prices[0], "new_world":prices[1], "pak_n_save": prices[2]};
        res.json(shop_to_price);
