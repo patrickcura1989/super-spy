@@ -49,6 +49,7 @@
     
     <div class="jumbotron">
       <div class="container">
+<<<<<<< HEAD
         <div class = "col-md-2"></div>
         <div class = "col-md-8">
 
@@ -75,6 +76,17 @@
       </div> 
     </div>
      
+=======
+        <h1>HI THERE</h1>
+          <div class="form-group">
+              <!--input type="text" placeholder="Enter Search Function Here" class="form-control" -->
+              <form onsubmit="getText()" action="http://www.google.co.nz/"> Enter Name: <input id = "fname" type="text" size="20">
+              <button type="submit" class="btn btn-success">GO!</button>
+              </form>
+          </div>
+        </div>
+      </div>    
+>>>>>>> origin/master
 
 
     <!-- Bootstrap core JavaScript
@@ -85,5 +97,12 @@
     <script src="../../dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+
+    <script>
+    function getText(){
+      fname = document.forms[0].fname.value;
+      alert(fname);
+    }
+    </script>
   </body>
 </html>
