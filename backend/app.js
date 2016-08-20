@@ -40,29 +40,94 @@ var inventory = {"countdown": {"eggs" : 725,
                                "orange_juice": 450}
                 };
 
-
-function searchInventory(item) {
-  //search inventory
-  var countdown = inventory["countdown"][item];
-  var new_world = inventory["new_world"][item];
-  var pak_n_save = inventory["pak_n_save"][item];
-
-  // return map of results
-  return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
+// scrapes values from the countdown website
+function getCountdownPrice(item) {
+  url =
+  'http://shop.countdown.co.nz/Shop/Search?__RequestVerificationToken=HAczcFWEE1H8iljsKxgyHq357IOAO41Kz%2BWZfmDBiYL%2FyVH9RVH2F3zYV%2FOj4TcZrTa9sd5j%2F2xPMJUGKzB%2F6JZZ2hOClR9a9Ya8d79RdTLrTeX%2FPbuMYSldIbSQjhK98dgZYhYCMwgnSu6S31yvARxHalCog2v%2Fo5DynH3MNr8%3D&search='
+  +item+
+  '&SearchType=grocery&_mode=ajax&_ajaxsource=search-panel&_referrer=%2FShop%2FSearchProducts%3Fsearch%3D'
+  +item+
+  '&_showTrolley=false&_bannerViews=2987,3478,3501,3503,3511&_=1471659959708';
+return new Promise(function(resolve, reject){
+    request(url, function(error, response, html){
+      var ret = response.body+"";
+      ret = ret.replace(/&gt;/g, '>');
+      ret = ret.replace(/&lt;/g, '<');
+      ret = ret.replace(/&quot;/g, '"');
+      ret = ret.replace(/&apos;/g, "'");
+      ret = ret.replace(/&amp;/g, '&');
+        if(!error){
+        var $ = cheerio.load(ret);
+        var title, release, rating;
+        var json = { price1 : "", price2 : ""};
+        var count = 0;
+        $('.price.din-medium').filter(function(){
+          if(count == 0){
+            var data = $(this);
+            var price = data.first().text().replace("ea","").replace("kg","").replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim().replace("$","").replace(".","");
+            resolve(parseInt(price));
+          }
+          count++;
+        })
+      }
+    });
+  });
 }
 
-app.get("/search", (req, res)=> {
-  var item = req.param('item');
-  console.log(item);
-  res.json(searchInventory(item));
+// Function scrapes off the pak n save website for information
+function getPakNSavePrice(item){
+   return Promise.resolve(inventory["pak_n_save"][item]);
+}
+
+// Function scrapes off the new world website for information
+function getNewWorldPrice(item){
+  return new Promise(function(resolve, reject){
+      var headers = {
+           'Authorization': 'd84cd964-2167-e611-8664-e4115be92184',
+           'Accept-Language': 'en-US,en;q=0.8',
+           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+           'Accept': 'application/vnd.mywebgrocer.grocery-list-v2+json',
+           'Referer': 'https://shop.newworld.co.nz/store/6EE070045',
+           'X-Requested-With': 'XMLHttpRequest',
+           'Connection': 'keep-alive',
+           'Cookie': 'MWG_GSA_S={"AuthToken":"d84cd964-2167-e611-8664-e4115be92184","PseudoStoreId":"6EE070045","Version":"1.11"}'
+       };
+       var options = {
+           url: 'https://shop.newworld.co.nz/api/v1/products/store/6EE070045/search?skip=0&take=15&q='+item,
+           headers: headers
+       };
+
+       function callback(error, response, body) {
+           if (!error && response.statusCode == 200) {
+             var obj = JSON.parse(body);
+             var price = obj["Items"][0]["CurrentPrice"].trim().replace("$","").replace(".","");
+             var integerPrice = parseInt(price);
+             resolve(integerPrice);
+           }
+       }
+       request(options, callback);
+  });
+  //return Promise.resolve(inventory["new_world"][item]);
+}
+
+// This function handles HTML GET requests
+app.get('/', function(req, res) {
+  res.sendfile("index.html");
 });
 
-
-app.get("/", (req, res) => {
-  res.sendfile("index.html");
+app.get('/search', function(req, res){
+     var item = req.param('item');
+     console.log(item);
+     Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
+       //values looks like [0,0, 0]
+       var prices = [{"price":values[0]},{"price":values[1]},{"price":values[2]}]
+       // Format dictionary
+       var shop_to_price = {"countdown":prices[0], "new_world":prices[1], "pak_n_save": prices[2]};
+       res.json(shop_to_price);
+     });
 });
 
 app.listen(3000);
 
 console.log("Serving files on localhost:3000");
-console.log("example search: http://localhost:3000/search?item=eggs")
+console.log("example search: http://localhost:3000/search?item=eggs");
