@@ -42,7 +42,7 @@ var inventory = {"countdown": {"eggs" : 725,
                                "orange_juice": 450}
                 };
 
-
+// this function returns a map containing spoof values
 function searchInventory(item) {
   //search inventory
   var countdown = inventory["countdown"][item];
@@ -53,6 +53,7 @@ function searchInventory(item) {
   return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
 }
 
+// scrapes values from the countdown website
 function getCountdownPrice(item) {
   url =
   'http://shop.countdown.co.nz/Shop/Search?__RequestVerificationToken=HAczcFWEE1H8iljsKxgyHq357IOAO41Kz%2BWZfmDBiYL%2FyVH9RVH2F3zYV%2FOj4TcZrTa9sd5j%2F2xPMJUGKzB%2F6JZZ2hOClR9a9Ya8d79RdTLrTeX%2FPbuMYSldIbSQjhK98dgZYhYCMwgnSu6S31yvARxHalCog2v%2Fo5DynH3MNr8%3D&search='
@@ -78,7 +79,7 @@ function getCountdownPrice(item) {
           var data = $(this);
           var price = data.first().text().replace("ea","").replace("kg","").replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim().replace("$","").replace(".","");
           console.log(parseInt(price));
-          return parseInt(price)
+          return new Promise.resolve(parseInt(price))
           //json.price1 = data.children().first().text();
         }
         count++;
@@ -87,24 +88,22 @@ function getCountdownPrice(item) {
   });
 }
 
-// var countdownPromise = new Promise((itemresolve, reject) => { //TODO: Pass in the item so we can search by it
-//   resolve(getCountdownPrice);
-// });
+// promises!
+var paknsavePromise = new Promise.resolve(inventory["pak_n_save"][item]);
+var new_worldPromise = 0;
 
-// var paknsavePromise = new Promise.resolve(inventory["pak_n_save"][item]);
-// app.get('/', function(req, res){
-//
-//   var item = req.param('item');
-//   //console.log(item);
-//   //res.json(searchInventory(item));
-//
-//   Promise.all([countdownPromise(item), paknsavePromise, newworldPromise]).then( values => {
-//     //manipulate values to match the output previously defined
-//     res.json(values)
-//   })
+// This function handles HTML GET requests
+app.get('/', function(req, res) {
 
+   var item = req.param('item');
+   //console.log(item);
+   //res.json(searchInventory(item));
 
-// });
+   Promise.all([getCountdownPrice(item), paknsavePromise, new_worldPromise]).then(function(values){
+       //manipulate values to match the output previously defined
+       console.log(values);
+   });
+});
 
 app.listen(3000);
 
