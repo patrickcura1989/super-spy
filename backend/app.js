@@ -5,6 +5,8 @@ var request = require('request-promise-native');
 var cheerio = require('cheerio');
 var app = express();
 
+app.use(express.static("static"));
+
 var inventory = {"countdown": {"eggs" : 725,
                                "milk" : 643,
                                "ham" :  300,
@@ -49,10 +51,15 @@ function searchInventory(item) {
   return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
 }
 
-app.get("/", (req, res)=> {
+app.get("/search", (req, res)=> {
   var item = req.param('item');
   console.log(item);
   res.json(searchInventory(item));
+});
+
+
+app.get("/", (req, res) => {
+  res.sendfile("index.html");
 });
 
 app.listen(3000);
