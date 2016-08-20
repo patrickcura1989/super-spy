@@ -51,7 +51,7 @@ function searchInventory(item) {
   return {"countdown": {"price": countdown}, "new_world": {"price": new_world}, "pak_n_save": {"price": pak_n_save}};
 }
 
-app.get("/scrape", (req, res)=> {
+app.get("/", (req, res)=> {
   //var item = req.param('item');
   //res.send(searchInventory(item));
 
