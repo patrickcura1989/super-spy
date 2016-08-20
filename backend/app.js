@@ -8,7 +8,6 @@ var app = express();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
-var forecastIOKey = "XXX"; // FIXME : replace with your API key gained from forecast.io
 var inventory = {"countdown": {"eggs" : 725,
                                "milk" : 643,
                                "ham" :  300,
@@ -107,13 +106,3 @@ app.listen(3000);
 
 console.log("Serving files on localhost:3000");
 console.log("example search: http://localhost:3000/search?item=eggs");
-
-// this function returns a map containing spoof values
-// function searchInventory(item) {
-//   //search inventory
-//   var countdown = Promise.resolve(inventory["countdown"][item]);
-//   var new_world = Promise.resolve(inventory["new_world"][item]);
-//   var pak_n_save = Promise.resolve(inventory["pak_n_save"][item]);
-//
-//   return Promise.all([countdown, new_world, pak_n_save]).t
-// }
