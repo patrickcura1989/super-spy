@@ -47,7 +47,7 @@ function searchInventory(item) {
   var pak_n_save = inventory["pak_n_save"][item];
 
   // return map of results
-  return {"countdown": {item: countdown}, "new_world": {item: new_world}, "pak_n_save": {item: pak_n_save}};
+  return {"countdown": {price: countdown}, "new_world": {price: new_world}, "pak_n_save": {price: pak_n_save}};
 }
 
 
@@ -71,8 +71,10 @@ function searchInventory(item) {
 //  }
 //}
 
-app.get("/", (req, res) => {
- res.send("hello");
+app.get('/', (req, res) => {
+  var item = req.param('item');
+  console.log(item);
+  res.json(searchInventory(item));
 });
 
 app.listen(3000);
