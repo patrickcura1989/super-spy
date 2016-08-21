@@ -11,66 +11,74 @@ $(function(){
 		$(".loadingState").show();
 
 		var textConverted = text.replace(" ","%20");
-		
+
 		var url = "http://localhost:3000/search?item=" + textConverted;
 		$.getJSON(url).then(function (data) {
 			// body...
 			console.log(data);
 			//alert(data);
-			
-	
+
+
 			//{"countdown":{"price":643},"new_world":{"price":743},"pak_n_save":{"price":543}
 
 			var cdPrice = data["countdown"]["price"];
-			
+			var cd_val = data["countdown"]["price"];
+
 			if(cdPrice== undefined || cdPrice == null){
 				console.log(cdPrice);
 				cdPrice = "Unavailable";
 				console.log(cd);
+				cd_val = 0;
 			}
 			else{
 				cdPrice = "$"+(cdPrice/100).toFixed(2);
 			}
-			var cd = ["countdown",cdPrice];
+			var cd = ["countdown",cdPrice, cd_val];
 
 			var nwPrice = data["new_world"]["price"];
+			var nw_val = data["new_world"]["price"];
+
 			if(nwPrice == null){
 				nwPrice = "Unavailable";
+				nw_val = 0;
 			}
 			else{
 				nwPrice = "$"+(nwPrice/100).toFixed(2);
 			}
-			var nw = ["New World",nwPrice];
+			var nw = ["New World",nwPrice, nw_val];
 
 			var pkPrice = data["pak_n_save"]["price"];
+			var pk_val = data["pak_n_save"]["price"];
+
 			if(pkPrice == null){
 				pkPrice = "Unavailable";
+				pk_val = 0;
 			}
 			else{
 				pkPrice = "$"+(pkPrice/100).toFixed(2);
 			}
-			var pk = ["PakNSave", pkPrice];
+			var pk = ["PakNSave", pkPrice, pk_val];
 
 			var best = cd;
 			var second = nw;
 			var third = pk;
 
-			if(third[1] < second[1]){
+			if(third[2] < second[2]){
 				var temp= second;
 				second = third;
-				third = temp;				
+				third = temp;
 			}
 
-			if(second[1] < best[1]){
+			if(second[2] < best[2]){
 				var temp= best;
 				best = second;
 				second = temp;
-			} 
+			}
 
-			if(third[1]< second[1]){
+			if(third[2]< second[2]){
 				var temp = second;
 				second = third;
-				third = temp;				
+				third = temp;
 			}
 
 			$("#colLeftHeader").text(second[1]);
