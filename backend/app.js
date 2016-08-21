@@ -66,12 +66,12 @@ return new Promise(function(resolve, reject){
             var data = $(this);
             var price = data.first().text().match(/\$[0-9]*.[0-9]*/);
             var extract = price[0].replace("$","").replace(".","");
-            console.log(extract);
             resolve(parseInt(extract));
           }
           count++;
         })
       }
+      setTimeout(resolve, 1000, 0);
     });
   });
 }
@@ -110,6 +110,7 @@ function getNewWorldPrice(item){
              }
              resolve(parseInt(extract));
            }
+           setTimeout(resolve, 1000, 0);
        }
       request(options, callback);
   });
