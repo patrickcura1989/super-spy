@@ -124,7 +124,7 @@ app.get('/search', function(req, res){
      Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
        var prices = [{"price":values[0]},{"price":values[1]},{"price":values[0]*0.90}]
        //if values 1 is 0, it caught an error, turn everything to 0
-       if(values[1] == 0){
+       if(values[0] == 0 || values[1] == 0 || values[2] == 0){
           prices = [{"price": null},{"price": null}, {"price": null}]
        }
        // Format dictionary
