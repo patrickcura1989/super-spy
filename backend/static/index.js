@@ -9,8 +9,10 @@ $(function(){
 		var text = $("#text").val();
 		$(".section1").hide();
 		$(".loadingState").show();
+
+		var textConverted = text.replace(" ","%20");
 		
-		var url = "http://localhost:3000/search?item=" + text;
+		var url = "http://localhost:3000/search?item=" + textConverted;
 		$.getJSON(url).then(function (data) {
 			// body...
 			console.log(data);
