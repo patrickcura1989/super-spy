@@ -74,13 +74,16 @@ $(function(){
 			}
 
 			$("#colLeftHeader").text(second[1]);
-			$("#colLeftP").text(second[0]);
+			//$("#colLeftP").text(second[0]);
+			$("#colLeftLogo").attr("src",second[0] + ".png");
 
 			$("#colMiddleHeader").text(best[1]);
-			$("#colMiddleP").text(best[0]);
+			$("#colMiddleLogo").attr("src",best[0] + ".png");
+			//$("#colMiddleP").text(best[0]);
 
 			$("#colRightHeader").text(third[1]);
-			$("#colRightP").text(third[0]);
+			$("#colRightLogo").attr("src",third[0] + ".png");
+			//$("#colRightP").text(third[0]);
 
 
 			var text = $("#text").val();
