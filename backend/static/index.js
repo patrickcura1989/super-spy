@@ -18,15 +18,30 @@ $(function(){
 			//{"countdown":{"price":643},"new_world":{"price":743},"pak_n_save":{"price":543}
 
 			var cdPrice = data["countdown"]["price"];
-			cdPrice = (cdPrice/100).toFixed(2);
+			if(cdPrice == null){
+				cd = "Unavailable";
+			}
+			else{
+				cdPrice = (cdPrice/100).toFixed(2);
+			}
 			var cd = ["countdown",cdPrice];
 
 			var nwPrice = data["new_world"]["price"];
-			nwPrice = (nwPrice/100).toFixed(2);
+			if(nwPrice == null){
+				nw = "Unavailable";
+			}
+			else{
+				nwPrice = (nwPrice/100).toFixed(2);
+			}
 			var nw = ["New World",nwPrice];
 
 			var pkPrice = data["pak_n_save"]["price"];
-			pkPrice = (pkPrice/100).toFixed(2);
+			if(pkPrice == null){
+				pk = "Unavailable";
+			}
+			else{
+				pkPrice = (pkPrice/100).toFixed(2);
+			}
 			var pk = ["PakNSave", pkPrice];
 
 			var best = cd;
