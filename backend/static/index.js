@@ -7,6 +7,7 @@ $(function(){
 	$("#searchButton").on("click", function(data){
 		var text = $("#text").val();
 		$(".section1").hide();
+		$(".loadingState").show();
 		
 		var url = "http://localhost:3000/search?item=" + text;
 		$.getJSON(url).then(function (data) {
@@ -83,6 +84,7 @@ $(function(){
 			$(".titleSecondPage").text("Here are your results for "+ text)
 
 			$(".section2").show();
+			$(".loadingState").hide();
 		});
 	});
 

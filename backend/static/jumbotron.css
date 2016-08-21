@@ -19,6 +19,9 @@ section.section1{
 	display: none;
 }
 
+#loadingState{
+	display: none;
+}
 #colLeft{
 	background-color: Transparent;
     background-repeat:no-repeat;
@@ -106,6 +109,12 @@ p.centeredText{
 	padding-top: 20px;
 	width:250px;
 	height:50px;
+}
+
+#loadingStateLogo{
+	padding-left: 30px;
+	width: 150px;
+	height: 55px;
 }
 
 #pad{
