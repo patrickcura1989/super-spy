@@ -64,8 +64,10 @@ return new Promise(function(resolve, reject){
         $('.price.din-medium').filter(function(){
           if(count == 0){
             var data = $(this);
-            var price = data.first().text().replace("ea","").replace("kg","").replace(/ /g,'').replace(/(\r\n|\n|\r)/gm,"").trim().replace("$","").replace(".","");
-            resolve(parseInt(price));
+            var price = data.first().text().match(/\$[0-9]*.[0-9]*/);
+            var extract = price[0].replace("$","").replace(".","");
+            console.log(extract);
+            resolve(parseInt(extract));
           }
           count++;
         })
@@ -101,12 +103,13 @@ function getNewWorldPrice(item){
            if (!error && response.statusCode == 200) {
              var obj = JSON.parse(body);
              try{
-               var price = obj["Items"][0]["CurrentPrice"].trim().replace("$","").replace(".","");
+               var price = obj["Items"][0]["CurrentPrice"].trim().match(/\$[0-9]*.[0-9]*/);
+               var extract = price[0].replace("$","").replace(".","");
+               console.log(extract);
              } catch(e) {
                resolve(0);
              }
-             var integerPrice = parseInt(price);
-             resolve(integerPrice);
+             resolve(parseInt(extract));
            }
            setTimeout(resolve, "1000", 0);
        }
