@@ -78,6 +78,10 @@ $(function(){
 			$("#colRightHeader").text(third[1]);
 			$("#colRightP").text(third[0]);
 
+
+			var text = $("#text").val();
+			$(".titleSecondPage").text("Here are your results for "+ text)
+
 			$(".section2").show();
 		});
 	});
