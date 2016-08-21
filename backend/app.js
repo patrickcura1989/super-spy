@@ -70,6 +70,7 @@ return new Promise(function(resolve, reject){
           count++;
         })
       }
+      setTimeout(resolve, "1000", 0);
     });
   });
 }
