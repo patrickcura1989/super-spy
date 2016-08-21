@@ -108,6 +108,7 @@ function getNewWorldPrice(item){
              var integerPrice = parseInt(price);
              resolve(integerPrice);
            }
+           setTimeout(resolve, "1000", 0);
        }
       request(options, callback);
   });
