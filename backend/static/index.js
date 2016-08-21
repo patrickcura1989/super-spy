@@ -18,29 +18,32 @@ $(function(){
 			//{"countdown":{"price":643},"new_world":{"price":743},"pak_n_save":{"price":543}
 
 			var cdPrice = data["countdown"]["price"];
-			if(cdPrice == null){
-				cd = "Unavailable";
+			
+			if(cdPrice== undefined || cdPrice == null){
+				console.log(cdPrice);
+				cdPrice = "Unavailable";
+				console.log(cd);
 			}
 			else{
-				cdPrice = (cdPrice/100).toFixed(2);
+				cdPrice = "$"+(cdPrice/100).toFixed(2);
 			}
 			var cd = ["countdown",cdPrice];
 
 			var nwPrice = data["new_world"]["price"];
 			if(nwPrice == null){
-				nw = "Unavailable";
+				nwPrice = "Unavailable";
 			}
 			else{
-				nwPrice = (nwPrice/100).toFixed(2);
+				nwPrice = "$"+(nwPrice/100).toFixed(2);
 			}
 			var nw = ["New World",nwPrice];
 
 			var pkPrice = data["pak_n_save"]["price"];
 			if(pkPrice == null){
-				pk = "Unavailable";
+				pkPrice = "Unavailable";
 			}
 			else{
-				pkPrice = (pkPrice/100).toFixed(2);
+				pkPrice = "$"+(pkPrice/100).toFixed(2);
 			}
 			var pk = ["PakNSave", pkPrice];
 
@@ -66,26 +69,17 @@ $(function(){
 				third = temp;				
 			}
 
-			$("#colLeftHeader").text("$" + second[1]);
+			$("#colLeftHeader").text(second[1]);
 			$("#colLeftP").text(second[0]);
 
-			$("#colMiddleHeader").text("$" + best[1]);
+			$("#colMiddleHeader").text(best[1]);
 			$("#colMiddleP").text(best[0]);
 
-			$("#colRightHeader").text("$" + third[1]);
+			$("#colRightHeader").text(third[1]);
 			$("#colRightP").text(third[0]);
 
-			
-			//alert(best[0] + "!: " + best[1] + "\n" + second[0] + "!: " + second[1] + "\n" + third[0] + "!: " + third[1]);
 			$(".section2").show();
 		});
 	});
 
 });
-
-//$(function() {
-//	$("#returnButton").on("click", function(data)){
-//		$(".section1").show();
-//		$(".section2").hide();
-//	});
-//});
