@@ -125,7 +125,7 @@ app.get('/search', function(req, res){
      var item = req.param('item');
      console.log(item);
      Promise.all([getCountdownPrice(item),getNewWorldPrice(item),getPakNSavePrice(item)]).then (function(values){
-       var prices = [{"price":values[0]},{"price":values[1]},{"price":values[0]*0.90}]
+       var prices = [{"price":values[0]},{"price":values[1]},{"price":Math.ceil(values[0]*0.90)}]
        //if values 1 is 0, it caught an error, turn everything to 0
        if(values[1] == 0){
           prices = [{"price": null},{"price": null}, {"price": null}]
