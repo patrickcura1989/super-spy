@@ -7,9 +7,7 @@ body{
 	/*padding-top: 100px;*/
 }
 
-section.section1{
-	padding-top:50px;
-}
+
 
 #resultscontainer{
 	padding: 50px;
@@ -118,6 +116,6 @@ p.centeredText{
 }
 
 #pad{
-	padding-top: 100px;
+	padding-top: 150px;
 }
 

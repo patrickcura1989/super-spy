@@ -2,6 +2,7 @@ $(function(){
 	$("#returnButton").on("click", function(data){
 		$(".section1").show();
 		$(".section2").hide();
+		$(".titleSecondPage").text("The cheapest results are coming!");
 	});
 
 	$("#searchButton").on("click", function(data){
